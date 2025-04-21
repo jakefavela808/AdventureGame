@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class ExplorationCommandHandler
 {
@@ -71,25 +71,7 @@ public static class ExplorationCommandHandler
 
     private static void TalkToNPC(Command command)
     {
-        // Prefer exact match, then fallback to partial (contains) match, case-insensitive
-        var npc = Player.CurrentLocation.NPCs.FirstOrDefault(n => n.Name.Equals(command.Noun, StringComparison.OrdinalIgnoreCase));
-        if (npc == null)
-        {
-            npc = Player.CurrentLocation.NPCs.FirstOrDefault(n => n.Name.ToLower().Contains(command.Noun.ToLower()));
-        }
-        if (npc != null)
-        {
-            Console.Clear();
-            States.ChangeState(StateTypes.Talking);
-            Console.WriteLine(CommandList.conversationCommands);
-            Console.WriteLine(npc.AsciiArt);
-            Console.WriteLine($"{npc.Description}");
-            Console.WriteLine($"{npc.Name} says:");
-        }
-        else
-        {
-            Console.WriteLine($"There is no {command.Noun} here to talk to.");
-        }
+        Player.TalkToNPC(command);
     }
     
     private static void ChangeToFightState(Command obj)
