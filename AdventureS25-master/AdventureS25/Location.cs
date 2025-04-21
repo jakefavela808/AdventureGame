@@ -18,6 +18,7 @@ public class Location
     public Dictionary<string, Location> Connections;
     public List<Item> Items = new List<Item>();
     public List<NPC> NPCs = new List<NPC>();
+    public List<Pal> Pals = new List<Pal>();
     
     public Location(string availableCommandsInput, string nameInput, string asciiArtInput, string descriptionInput, LocationType type)
     {
@@ -28,6 +29,7 @@ public class Location
 
         Connections = new Dictionary<string, Location>();
         NPCs = new List<NPC>();
+        Pals = new List<Pal>();
     }
 
     public void AddConnection(string direction, Location location)
@@ -58,6 +60,11 @@ public class Location
         {
             fullDescription += "\nYou see " + NPCs[0].Name + " here.";
         }
+        // Show a message if a Pal is present
+        if (Pals.Count > 0)
+        {
+            fullDescription += "\nA pal named " + Pals[0].Name + " is here.";
+        }
         foreach (Item item in Items)
         {
             fullDescription += "\n" + item.GetLocationDescription();
@@ -78,9 +85,20 @@ public class Location
         NPCs.Add(npc);
     }
 
+    public void AddPal(Pal pal)
+    {
+        Debugger.Write($"Adding Pal {pal.Name} to {name}");
+        Pals.Add(pal);
+    }
+
     public void RemoveNPC(NPC npc)
     {
         NPCs.Remove(npc);
+    }
+
+    public void RemovePal(Pal pal)
+    {
+        Pals.Remove(pal);
     }
 
     public bool HasItem(Item itemLookingFor)

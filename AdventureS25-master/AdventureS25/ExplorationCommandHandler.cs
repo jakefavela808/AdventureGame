@@ -18,6 +18,7 @@ public static class ExplorationCommandHandler
             {"fight", ChangeToFightState},
             {"explore", ChangeToExploreState},
             {"talk", TalkToNPC},
+            {"battle", BattlePal},
             {"drink", Drink},
             {"beerme", SpawnBeerInInventory},
             {"unbeerme", UnSpawnBeerInInventory},
@@ -72,6 +73,11 @@ public static class ExplorationCommandHandler
     private static void TalkToNPC(Command command)
     {
         NPCs.TalkToNPC(command);
+    }
+
+    private static void BattlePal(Command command)
+    {
+        Pals.BattlePal(command);
     }
     
     private static void ChangeToFightState(Command obj)

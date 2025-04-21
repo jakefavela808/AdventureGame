@@ -53,12 +53,30 @@ public static class Map
         }
     }
 
+    public static void AddPal(Pal pal, string locationName)
+    {
+        Location location = GetLocationByName(locationName);
+        if (pal != null && location != null)
+        {
+            location.AddPal(pal);
+        }
+    }
+
     public static void RemoveNPC(NPC npc, string locationName)
     {
         Location location = GetLocationByName(locationName);
         if (npc != null && location != null)
         {
             location.RemoveNPC(npc);
+        }
+    }
+
+    public static void RemovePal(Pal pal, string locationName)
+    {
+        Location location = GetLocationByName(locationName);
+        if (pal != null && location != null)
+        {
+            location.RemovePal(pal);
         }
     }
     

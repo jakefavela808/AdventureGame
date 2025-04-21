@@ -68,6 +68,7 @@ public static class Game
         Map.Initialize();
         Items.Initialize();
         NPCs.Initialize();
+        Pals.Initialize();
         Player.Initialize();
     }
 }
