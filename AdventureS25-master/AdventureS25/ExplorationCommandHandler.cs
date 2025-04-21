@@ -71,7 +71,7 @@ public static class ExplorationCommandHandler
 
     private static void TalkToNPC(Command command)
     {
-        Player.TalkToNPC(command);
+        NPCs.TalkToNPC(command);
     }
     
     private static void ChangeToFightState(Command obj)

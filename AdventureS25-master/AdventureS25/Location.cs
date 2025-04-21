@@ -51,7 +51,7 @@ public class Location
 
     public string GetDescription()
     {
-        string fullDescription = AvailableCommands + "\n" + "============ " + name + " ============" + "\n" + AsciiArt + "\n" + Description;
+        string fullDescription = AvailableCommands + "\n" + "============ " + name + " ============" + "\n\n" + AsciiArt + "\n" + Description;
 
         // Show a message if an NPC is present (but no ASCII art or desc)
         if (NPCs.Count > 0)
