@@ -4,28 +4,60 @@ public static class Game
 {
     public static void PlayGame()
     {
-        Initialize();
+        Console.WriteLine(AsciiArt.titleAndLogo);
+        Console.WriteLine("1. Start Game\n2. About Game\n3. Quit Game");
+        string input = CommandProcessor.GetInput();
 
-        Console.WriteLine(Player.GetLocationDescription());
-        
-        bool isPlaying = true;
-        
-        while (isPlaying == true)
+        if (input == "1")
         {
-            Command command = CommandProcessor.Process();
+            Console.Clear();
+            Console.WriteLine("What is your name?");
+            string name = CommandProcessor.GetInput();
+            Console.WriteLine($"Welcome, {name}!");
+            Console.Clear();
+            Initialize();
+            Console.WriteLine(Player.GetLocationDescription());
             
-            if (command.IsValid)
+            bool isPlaying = true;
+
+            while (isPlaying)
             {
-                if (command.Verb == "exit")
+                Command command = CommandProcessor.Process();
+
+                if (command.IsValid)
                 {
-                    Console.WriteLine("Game Over!");
-                    isPlaying = false;
-                }
-                else
-                {
-                    CommandHandler.Handle(command);
+                    if (command.Verb == "exit")
+                    {
+                        Console.WriteLine("Game Over!");
+                        isPlaying = false;
+                    }
+                    else
+                    {
+                        CommandHandler.Handle(command);
+                    }
                 }
             }
+        }
+        else if (input == "2")
+        {
+            Console.Clear();
+            Console.WriteLine(AsciiArt.titleAndLogo);
+            Console.WriteLine("About Game");
+            Console.WriteLine("This is an adventure game where you explore and interact with the environment.");
+            Console.WriteLine("Press any key to return to the main menu...");
+            Console.Write("> ");
+            Console.ReadKey();
+            Console.Clear();
+            PlayGame();
+        }
+        else if (input == "3")
+        {
+            Console.WriteLine("Quitting Game");
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please try again.");
+            PlayGame();
         }
     }
 

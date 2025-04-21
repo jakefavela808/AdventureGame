@@ -8,27 +8,26 @@ public static class Map
     
     public static void Initialize()
     {
-        Location entrance = new Location("Entrance", 
-            "This is the entrance room. Everything starts here.");
-        nameToLocation.Add("Entrance", entrance);
+        Location home = new Location(CommandList.exploreCommands, "Home", AsciiArt.homeLocation, "This is your home. Everything starts here.");
+        nameToLocation.Add("Home", home);
         
-        Location storage = new Location("Storage", 
-            "You are in a small storage room. There are lots of things.");
-        nameToLocation.Add("Storage", storage);
-        
-        Location throne = new Location("Throne Room", 
-            "There is a big ass throne here.");
-        nameToLocation.Add("Throne Room", throne);
+        Location verdantGrasslands = new Location(CommandList.exploreCommands, "Verdent Grasslands", AsciiArt.grasslandsLocation, "A lush, open field where grass-type Pals roam freely. The gentle breeze carries sweet scents of wildflowers, and you can see small Pals playing in the tall grass.");
+        nameToLocation.Add("Verdent Grasslands", verdantGrasslands);
 
-        Location cave = new Location("Cave", "It's a cave.  It's dark.  Dave lives in the cave");
-        nameToLocation.Add("Cave", cave);
-        
-        entrance.AddConnection("east", storage);
-        storage.AddConnection("west", entrance);
-        throne.AddConnection("south", entrance);
-        entrance.AddConnection("north", throne);
+        Location laboratory = new Location(CommandList.exploreCommands, "Professor Jon's Lab", AsciiArt.laboratoryLocation, "A high-tech laboratory where scientists study Pal evolution and genetics. Steel and electric-type Pals assist with experiments, moving between complex machinery.");
+        nameToLocation.Add("Professor Jon's Lab", laboratory);
 
-        StartLocation = entrance;
+        Location palCenter = new Location(CommandList.exploreCommands, "Pal Center", AsciiArt.palCenterLocation, "A modern healing facility with state-of-the-art technology for treating injured Pals. The center is staffed by friendly nurses and doctors who can restore your Pals to full health. A large red and white sign hangs above the entrance.");
+        nameToLocation.Add("Pal Center", palCenter);
+        
+        home.AddConnection("north", verdantGrasslands);
+        verdantGrasslands.AddConnection("south", home);
+        verdantGrasslands.AddConnection("east", laboratory);
+        verdantGrasslands.AddConnection("west", palCenter);
+        palCenter.AddConnection("east", verdantGrasslands);
+        laboratory.AddConnection("west", verdantGrasslands);
+
+        StartLocation = home;
     }
     
 

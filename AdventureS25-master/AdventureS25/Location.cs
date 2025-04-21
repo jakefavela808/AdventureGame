@@ -1,17 +1,22 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public class Location
 {
     private string name;
     public string Description;
+    public string AsciiArt;
+    public string AvailableCommands;
     
     public Dictionary<string, Location> Connections;
     public List<Item> Items = new List<Item>();
     
-    public Location(string nameInput, string descriptionInput)
+    public Location(string availableCommandsInput, string nameInput, string asciiArtInput, string descriptionInput)
     {
-        name = nameInput;
+        name = nameInput.ToUpper();
         Description = descriptionInput;
+        AsciiArt = asciiArtInput;
+        AvailableCommands = availableCommandsInput;
+
         Connections = new Dictionary<string, Location>();
     }
 
@@ -36,7 +41,7 @@ public class Location
 
     public string GetDescription()
     {
-        string fullDescription = name + "\n" + Description;
+        string fullDescription = AvailableCommands + "\n" + "============ " + name + " ============" + "\n" + AsciiArt + "\n" + Description;
 
         foreach (Item item in Items)
         {
