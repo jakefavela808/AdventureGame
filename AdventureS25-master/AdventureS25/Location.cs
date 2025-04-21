@@ -9,6 +9,7 @@ public class Location
     
     public Dictionary<string, Location> Connections;
     public List<Item> Items = new List<Item>();
+    public List<NPC> NPCs = new List<NPC>();
     
     public Location(string availableCommandsInput, string nameInput, string asciiArtInput, string descriptionInput)
     {
@@ -18,6 +19,7 @@ public class Location
         AvailableCommands = availableCommandsInput;
 
         Connections = new Dictionary<string, Location>();
+        NPCs = new List<NPC>();
     }
 
     public void AddConnection(string direction, Location location)
@@ -43,6 +45,11 @@ public class Location
     {
         string fullDescription = AvailableCommands + "\n" + "============ " + name + " ============" + "\n" + AsciiArt + "\n" + Description;
 
+        // Show a message if an NPC is present (but no ASCII art or desc)
+        if (NPCs.Count > 0)
+        {
+            fullDescription += $"\nYou see {NPCs[0].Name} here.";
+        }
         foreach (Item item in Items)
         {
             fullDescription += "\n" + item.GetLocationDescription();
@@ -55,6 +62,17 @@ public class Location
     {
         Debugger.Write("Adding item "+ item.Name + "to " + name);
         Items.Add(item);
+    }
+
+    public void AddNPC(NPC npc)
+    {
+        Debugger.Write($"Adding NPC {npc.Name} to {name}");
+        NPCs.Add(npc);
+    }
+
+    public void RemoveNPC(NPC npc)
+    {
+        NPCs.Remove(npc);
     }
 
     public bool HasItem(Item itemLookingFor)

@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class Map
 {
@@ -41,6 +41,24 @@ public static class Map
         if (item != null && location != null)
         {
             location.AddItem(item);
+        }
+    }
+
+    public static void AddNPC(NPC npc, string locationName)
+    {
+        Location location = GetLocationByName(locationName);
+        if (npc != null && location != null)
+        {
+            location.AddNPC(npc);
+        }
+    }
+
+    public static void RemoveNPC(NPC npc, string locationName)
+    {
+        Location location = GetLocationByName(locationName);
+        if (npc != null && location != null)
+        {
+            location.RemoveNPC(npc);
         }
     }
     

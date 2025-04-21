@@ -5,8 +5,8 @@ public static class ConversationCommandHandler
     private static Dictionary<string, Action<Command>> commandMap =
         new Dictionary<string, Action<Command>>()
         {
-            {"y", Yes},
-            {"n", No},
+            {"yes", Yes},
+            {"no", No},
             {"leave", Leave},
         };
     

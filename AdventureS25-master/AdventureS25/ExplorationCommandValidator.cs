@@ -1,14 +1,14 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class ExplorationCommandValidator
 {
     public static List<string> Verbs = new List<string>
-        {"go", "eat", "take", "drop", "drink"};
+        {"go", "eat", "take", "drop", "drink", "talk"};
     
     public static List<string> StandaloneVerbs = new List<string>
     {
         "exit", "inventory", "look", "tron", "troff",
-        "nouns", "verbs", "fight", "explore", "talk", "beerme", 
+        "nouns", "verbs", "fight", "explore", "beerme", 
         "unbeerme", "puke", "tidyup", "teleport", "connect", "disconnect"
     };
     
@@ -32,6 +32,7 @@ public static class ExplorationCommandValidator
 
                 if (HasNoNoun(command))
                 {
+                    // Only allow standalone verbs that do not require a noun (talk is no longer one of them)
                     isValid = true;
                 }
                 else

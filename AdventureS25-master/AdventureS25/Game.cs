@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class Game
 {
@@ -67,6 +67,7 @@ public static class Game
         States.Initialize();
         Map.Initialize();
         Items.Initialize();
+        NPCs.Initialize();
         Player.Initialize();
     }
 }

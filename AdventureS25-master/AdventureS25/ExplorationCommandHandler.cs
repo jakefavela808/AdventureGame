@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class ExplorationCommandHandler
 {
@@ -17,7 +17,7 @@ public static class ExplorationCommandHandler
             {"verbs", Verbs},
             {"fight", ChangeToFightState},
             {"explore", ChangeToExploreState},
-            {"talk", ChangeToTalkState},
+            {"talk", TalkToNPC},
             {"drink", Drink},
             {"beerme", SpawnBeerInInventory},
             {"unbeerme", UnSpawnBeerInInventory},
@@ -69,9 +69,24 @@ public static class ExplorationCommandHandler
         Player.Drink(command);
     }
 
-    private static void ChangeToTalkState(Command obj)
+    private static void TalkToNPC(Command command)
     {
-        States.ChangeState(StateTypes.Talking);
+        // Prefer exact match, then fallback to partial (contains) match, case-insensitive
+        var npc = Player.CurrentLocation.NPCs.FirstOrDefault(n => n.Name.Equals(command.Noun, StringComparison.OrdinalIgnoreCase));
+        if (npc == null)
+        {
+            npc = Player.CurrentLocation.NPCs.FirstOrDefault(n => n.Name.ToLower().Contains(command.Noun.ToLower()));
+        }
+        if (npc != null)
+        {
+            States.ChangeState(StateTypes.Talking);
+            Console.WriteLine($"You approach {npc.Name}.");
+            Console.WriteLine($"{npc.Name} says: \"{npc.Description}\"");
+        }
+        else
+        {
+            Console.WriteLine($"There is no {command.Noun} here to talk to.");
+        }
     }
     
     private static void ChangeToFightState(Command obj)
