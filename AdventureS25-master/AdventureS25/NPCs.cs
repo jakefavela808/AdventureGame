@@ -13,8 +13,6 @@ public static class NPCs
             "A quirky scientist with wild hair, always eager to talk about Pals.",
             "   \\O//\n    | |\n   /   \\");
         nameToNPC.Add("Professor Jon", professorJon);
-        ExplorationCommandValidator.AddNoun("Professor Jon");
-        ExplorationCommandValidator.AddNoun("professor jon");
         ExplorationCommandValidator.AddNoun("jon");
 
         NPC nurseJoy = new NPC(
@@ -22,8 +20,6 @@ public static class NPCs
             "A kind nurse who takes care of injured Pals at the Pal Center.",
             "  ( ^_^ )\n  /|   |\\\n   |   | ");
         nameToNPC.Add("Nurse Joy", nurseJoy);
-        ExplorationCommandValidator.AddNoun("Nurse Joy");
-        ExplorationCommandValidator.AddNoun("nurse joy");
         ExplorationCommandValidator.AddNoun("joy");
 
         // Place NPCs in locations
