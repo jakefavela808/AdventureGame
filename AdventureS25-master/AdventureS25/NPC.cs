@@ -6,7 +6,7 @@ public class NPC
     public string Description { get; private set; }
     public string AsciiArt { get; private set; }
 
-    public NPC(string name, string description, string asciiArt)
+    public NPC( string name, string asciiArt, string description)
     {
         Name = name;
         Description = description;

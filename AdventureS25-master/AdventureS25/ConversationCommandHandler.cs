@@ -33,5 +33,7 @@ public static class ConversationCommandHandler
     {
         Console.WriteLine("You are dead");
         States.ChangeState(StateTypes.Exploring);
+        Console.Clear();
+        Player.Look();
     }
 }

@@ -10,21 +10,21 @@ public static class NPCs
     {
         NPC professorJon = new NPC(
             "Professor Jon",
-            "A quirky scientist with wild hair, always eager to talk about Pals.",
-            "   \\O//\n    | |\n   /   \\");
+            AsciiArt.jonCharacter,
+            "A quirky scientist with wild hair, always eager to talk about Pals.");
         nameToNPC.Add("Professor Jon", professorJon);
         ExplorationCommandValidator.AddNoun("jon");
 
-        NPC nurseJoy = new NPC(
-            "Nurse Joy",
-            "A kind nurse who takes care of injured Pals at the Pal Center.",
-            "  ( ^_^ )\n  /|   |\\\n   |   | ");
-        nameToNPC.Add("Nurse Joy", nurseJoy);
-        ExplorationCommandValidator.AddNoun("joy");
+        NPC nurseNoelia = new NPC(
+            "Nurse Noelia",
+            AsciiArt.nurseCharacter,
+            "A kind nurse who takes care of injured Pals at the Pal Center.");
+        nameToNPC.Add("Nurse Noelia", nurseNoelia);
+        ExplorationCommandValidator.AddNoun("noelia");
 
         // Place NPCs in locations
         Map.AddNPC(professorJon, "Professor Jon's Lab");
-        Map.AddNPC(nurseJoy, "Pal Center");
+        Map.AddNPC(nurseNoelia, "Pal Center");
     }
 
     public static NPC GetNPCByName(string npcName)

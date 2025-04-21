@@ -1,7 +1,15 @@
 namespace AdventureS25;
 
+public enum LocationType
+{
+    Indoor,
+    Outdoor
+}
+
+
 public class Location
 {
+    public LocationType Type { get; set; }
     private string name;
     public string Description;
     public string AsciiArt;
@@ -11,7 +19,7 @@ public class Location
     public List<Item> Items = new List<Item>();
     public List<NPC> NPCs = new List<NPC>();
     
-    public Location(string availableCommandsInput, string nameInput, string asciiArtInput, string descriptionInput)
+    public Location(string availableCommandsInput, string nameInput, string asciiArtInput, string descriptionInput, LocationType type)
     {
         name = nameInput.ToUpper();
         Description = descriptionInput;
@@ -48,7 +56,7 @@ public class Location
         // Show a message if an NPC is present (but no ASCII art or desc)
         if (NPCs.Count > 0)
         {
-            fullDescription += $"\nYou see {NPCs[0].Name} here.";
+            fullDescription += "\nYou see " + NPCs[0].Name + " here.";
         }
         foreach (Item item in Items)
         {

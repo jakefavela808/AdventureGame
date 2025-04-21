@@ -1,4 +1,4 @@
-namespace AdventureS25;
+﻿namespace AdventureS25;
 
 public static class ExplorationCommandHandler
 {
@@ -79,9 +79,12 @@ public static class ExplorationCommandHandler
         }
         if (npc != null)
         {
+            Console.Clear();
             States.ChangeState(StateTypes.Talking);
-            Console.WriteLine($"You approach {npc.Name}.");
-            Console.WriteLine($"{npc.Name} says: \"{npc.Description}\"");
+            Console.WriteLine(CommandList.conversationCommands);
+            Console.WriteLine(npc.AsciiArt);
+            Console.WriteLine($"{npc.Description}");
+            Console.WriteLine($"{npc.Name} says:");
         }
         else
         {
@@ -92,6 +95,7 @@ public static class ExplorationCommandHandler
     private static void ChangeToFightState(Command obj)
     {
         States.ChangeState(StateTypes.Fighting);
+
     }
     
     private static void ChangeToExploreState(Command obj)

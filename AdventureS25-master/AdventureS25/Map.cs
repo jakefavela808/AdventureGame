@@ -8,16 +8,16 @@ public static class Map
     
     public static void Initialize()
     {
-        Location home = new Location(CommandList.exploreCommands, "Home", AsciiArt.homeLocation, "This is your home. Everything starts here.");
+        Location home = new Location(CommandList.exploreCommands, "Home", AsciiArt.homeLocation, "This is your home. Everything starts here.", LocationType.Indoor);
         nameToLocation.Add("Home", home);
         
-        Location verdantGrasslands = new Location(CommandList.exploreCommands, "Verdent Grasslands", AsciiArt.grasslandsLocation, "A lush, open field where grass-type Pals roam freely. The gentle breeze carries sweet scents of wildflowers, and you can see small Pals playing in the tall grass.");
+        Location verdantGrasslands = new Location(CommandList.exploreCommands, "Verdent Grasslands", AsciiArt.grasslandsLocation, "A lush, open field where grass-type Pals roam freely. The gentle breeze carries sweet scents of wildflowers, and you can see small Pals playing in the tall grass.", LocationType.Outdoor);
         nameToLocation.Add("Verdent Grasslands", verdantGrasslands);
 
-        Location laboratory = new Location(CommandList.exploreCommands, "Professor Jon's Lab", AsciiArt.laboratoryLocation, "A high-tech laboratory where scientists study Pal evolution and genetics. Steel and electric-type Pals assist with experiments, moving between complex machinery.");
+        Location laboratory = new Location(CommandList.exploreCommands, "Professor Jon's Lab", AsciiArt.laboratoryLocation, "A high-tech laboratory where scientists study Pal evolution and genetics. Steel and electric-type Pals assist with experiments, moving between complex machinery.", LocationType.Indoor);
         nameToLocation.Add("Professor Jon's Lab", laboratory);
 
-        Location palCenter = new Location(CommandList.exploreCommands, "Pal Center", AsciiArt.palCenterLocation, "A modern healing facility with state-of-the-art technology for treating injured Pals. The center is staffed by friendly nurses and doctors who can restore your Pals to full health. A large red and white sign hangs above the entrance.");
+        Location palCenter = new Location(CommandList.exploreCommands, "Pal Center", AsciiArt.palCenterLocation, "A modern healing facility with state-of-the-art technology for treating injured Pals. The center is staffed by friendly nurses and doctors who can restore your Pals to full health. A large red and white sign hangs above the entrance.", LocationType.Indoor);
         nameToLocation.Add("Pal Center", palCenter);
         
         home.AddConnection("north", verdantGrasslands);
