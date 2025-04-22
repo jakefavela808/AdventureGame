@@ -26,12 +26,18 @@ public static class ExplorationCommandHandler
             {"tidyup", TidyUp},
             {"teleport", Teleport},
             {"connect", Connect},
-            {"disconnect", Disconnect}
+            {"disconnect", Disconnect},
+            {"help", ShowHelp}
         };
 
     private static void Disconnect(Command obj)
     {
         Conditions.ChangeCondition(ConditionTypes.IsRemovedConnection, true);
+    }
+
+    private static void ShowHelp(Command command)
+    {
+        Console.WriteLine(CommandList.exploreCommands);
     }
 
     private static void Connect(Command obj)

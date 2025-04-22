@@ -10,7 +10,7 @@ public static class ExplorationCommandValidator
         "exit", "inventory", "look", "tron", "troff",
         "nouns", "verbs", "fight", "explore", "beerme", 
         "unbeerme", "puke", "tidyup", "teleport", "connect", "disconnect",
-        "talk", "battle"
+        "talk", "battle", "help"
     };
     
     public static List<string> Nouns = new List<string>

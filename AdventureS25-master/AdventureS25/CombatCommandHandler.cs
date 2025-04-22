@@ -10,6 +10,7 @@ public static class CombatCommandHandler
             {"defend", Defend},
             {"run", Run},
             {"tame", Tame},
+{"help", ShowHelp},
         };
 
 
@@ -49,7 +50,8 @@ public static class CombatCommandHandler
             {
                 Action<Command> action = commandMap[command.Verb];
                 action.Invoke(command);
-                if (battleActive && !wildPal.IsFainted())
+                // If the command was "help", do NOT end the player's turn
+                if (command.Verb != "help" && battleActive && !wildPal.IsFainted())
                 {
                     playerTurn = false;
                     WildPalTurn();
@@ -191,6 +193,11 @@ public static class CombatCommandHandler
         playerPal = null;
         wildPal = null;
         playerTurn = true;
+    }
+
+    private static void ShowHelp(Command command)
+    {
+        Console.WriteLine(CommandList.combatCommands);
     }
 
     private static void ShowPals(Command command)

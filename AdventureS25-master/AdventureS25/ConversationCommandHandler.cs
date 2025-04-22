@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class ConversationCommandHandler
 {
@@ -8,6 +8,7 @@ public static class ConversationCommandHandler
             {"yes", Yes},
             {"no", No},
             {"leave", Leave},
+            {"help", ShowHelp},
         };
     
     public static void Handle(Command command)
@@ -27,6 +28,11 @@ public static class ConversationCommandHandler
     private static void No(Command command)
     {
         Console.WriteLine("You are disagreed");
+    }
+
+    private static void ShowHelp(Command command)
+    {
+        Console.WriteLine(CommandList.conversationCommands);
     }
 
     private static void Leave(Command command)

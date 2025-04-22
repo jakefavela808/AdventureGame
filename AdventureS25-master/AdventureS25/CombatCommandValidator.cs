@@ -6,11 +6,11 @@ public static class CombatCommandValidator
     {
         if (command.Verb == "attack" || command.Verb == "special" ||
             command.Verb == "defend" || command.Verb == "run" ||
-            command.Verb == "tame")
+            command.Verb == "tame" || command.Verb == "help")
         {
             return true;
         }
-        Console.WriteLine("Valid commands are: attack, special, defend, run, tame");
+        Console.WriteLine("Valid commands are: attack, special, defend, run, tame, help");
         return false;
     }
 }
