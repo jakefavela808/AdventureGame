@@ -12,14 +12,16 @@ public static class Pals
             "Sparky",
             AsciiArt.sandiePal,
             "A lively electric Pal, always ready for a battle!",
-            "Sparky: Ready to battle? Let's see what you've got!" );
+            "Sparky: Ready to battle? Let's see what you've got!",
+            32, 9, 6, 14);
         nameToPal.Add("Sparky", sparky);
 
         Pal aqua = new Pal(
             "Aqua",
             AsciiArt.gloopGlorpPal,
             "A calm water Pal, but fierce in battle.",
-            "Aqua: The tides will turn in my favor!" );
+            "Aqua: The tides will turn in my favor!",
+            28, 7, 8, 15);
         nameToPal.Add("Aqua", aqua);
 
         // Place Pals in locations
@@ -46,12 +48,7 @@ public static class Pals
         if (pals.Count == 1)
         {
             var pal = pals[0];
-            Console.Clear();
-            States.ChangeState(StateTypes.Fighting);
-            Console.WriteLine(CommandList.combatCommands);
-            Console.WriteLine(pal.AsciiArt);
-            Console.WriteLine($"{pal.Description}");
-            Console.WriteLine($"{pal.Dialogue}");
+            CombatCommandHandler.StartBattle(pal);
         }
         else if (pals.Count == 0)
         {

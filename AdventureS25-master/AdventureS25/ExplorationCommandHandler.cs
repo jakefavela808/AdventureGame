@@ -15,10 +15,10 @@ public static class ExplorationCommandHandler
             {"drop", Drop},
             {"nouns", Nouns},
             {"verbs", Verbs},
-            {"fight", ChangeToFightState},
+            {"battle", BattlePal},
             {"explore", ChangeToExploreState},
             {"talk", TalkToNPC},
-            {"battle", BattlePal},
+            {"pals", ShowPals},
             {"drink", Drink},
             {"beerme", SpawnBeerInInventory},
             {"unbeerme", UnSpawnBeerInInventory},
@@ -77,7 +77,15 @@ public static class ExplorationCommandHandler
 
     private static void BattlePal(Command command)
     {
-        Pals.BattlePal(command);
+        if (Player.CurrentLocation.Pals.Count > 0)
+        {
+            States.ChangeState(StateTypes.Fighting);
+            CombatCommandHandler.StartBattle(Player.CurrentLocation.Pals[0]);
+        }
+        else
+        {
+            Console.WriteLine("There is nothing to battle here.");
+        }
     }
     
     private static void ChangeToFightState(Command obj)
@@ -135,6 +143,11 @@ public static class ExplorationCommandHandler
     private static void ShowInventory(Command command)
     {
         Player.ShowInventory();
+    }
+
+    private static void ShowPals(Command command)
+    {
+        Player.ShowOwnedPals();
     }
     
     private static void Take(Command command)

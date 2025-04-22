@@ -1,13 +1,15 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class Player
 {
     public static Location CurrentLocation;
     public static List<Item> Inventory;
+    public static List<Pal> OwnedPals;
 
     public static void Initialize()
     {
         Inventory = new List<Item>();
+        OwnedPals = new List<Pal>();
         CurrentLocation = Map.StartLocation;
     }
 
@@ -72,6 +74,36 @@ public static class Player
             }
         }
     }
+
+    public static void AddPalToCollection(Pal pal)
+    {
+        if (!OwnedPals.Contains(pal))
+        {
+            OwnedPals.Add(pal);
+            Console.WriteLine($"{pal.Name} has been added to your collection!");
+        }
+        else
+        {
+            Console.WriteLine($"You already own {pal.Name}.");
+        }
+    }
+
+    public static void ShowOwnedPals()
+    {
+        if (OwnedPals.Count == 0)
+        {
+            Console.WriteLine("You do not have any pals yet.");
+        }
+        else
+        {
+            Console.WriteLine("Your Pals:");
+            foreach (var pal in OwnedPals)
+            {
+                Console.WriteLine($"- {pal.Name} (HP: {pal.CurrentHP}/{pal.MaxHP})");
+            }
+        }
+    }
+
 
     public static void Look()
     {
