@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class Items
 {
@@ -7,8 +7,9 @@ public static class Items
     
     public static void Initialize()
     {
+        // Quest item: sword for Jon's quest
         Item sword = new Item("sword",
-            "long sword", 
+            "A long sword, possibly the one Professor Jon lost.", 
             "There is a long sword stuck in a rock here.");
         nameToItem.Add("sword", sword);
         
@@ -42,8 +43,8 @@ public static class Items
             "A disgusting pile of puke.");
         nameToItem.Add("puke", puke);
         
-        // tell the map to add the item at a specific location
-        Map.AddItem(sword.Name, "Entrance");
+        // Place the sword in Verdent Grasslands for the quest
+        Map.AddItem(sword.Name, "Verdent Grasslands");
         Map.AddItem(apple.Name, "Entrance");
         Map.AddItem(spear.Name, "Entrance");
         Map.AddItem(donut.Name, "Storage");

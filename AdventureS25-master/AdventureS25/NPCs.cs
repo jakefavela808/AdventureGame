@@ -43,7 +43,37 @@ public static class NPCs
             // If Jon, give a sample quest
             if (npc.Name == "Professor Jon")
             {
-                Player.AddQuest(new Quest("Find the Lost Sword", "Jon has asked you to find his lost sword in the forest."));
+                var quest = Player.Quests.FirstOrDefault(q => q.Name == "Find the Lost Sword");
+                if (quest == null)
+                {
+                    quest = new Quest("Find the Lost Sword", "Jon has asked you to find his lost sword in the Verdent Grasslands and bring it back to him.");
+                    Player.AddQuest(quest);
+                    Console.WriteLine("\nJon: Please find my lost sword in the Verdent Grasslands and bring it to me!");
+                }
+                else if (!quest.IsCompleted)
+                {
+                    var sword = Items.GetItemByName("sword");
+                    if (Player.Inventory.Contains(sword))
+                    {
+                        quest.IsCompleted = true;
+                        Player.RemoveItemFromInventory("sword");
+                        Console.WriteLine("\nJon: You found my sword! Thank you so much!");
+                        Console.WriteLine("Quest completed! You can reward one of your pals with XP.");
+                        var pal = Player.PromptSelectPal("Which pal should receive 20 XP as a quest reward?");
+                        if (pal != null)
+                        {
+                            pal.GainXP(20);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nJon: Please bring me my lost sword from the Verdent Grasslands!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("\nJon: Thank you again for returning my sword!");
+                }
             }
         }
         else if (npcs.Count == 0)

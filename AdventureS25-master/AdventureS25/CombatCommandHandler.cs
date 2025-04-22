@@ -121,6 +121,7 @@ public static class CombatCommandHandler
         {
             Console.WriteLine("You successfully ran away!");
             EndBattle();
+            Console.Clear();
             States.ChangeState(StateTypes.Exploring);
             Player.Look();
         }

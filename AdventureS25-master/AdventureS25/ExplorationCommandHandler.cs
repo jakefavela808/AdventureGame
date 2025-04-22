@@ -89,16 +89,20 @@ public static class ExplorationCommandHandler
 
     private static void BattlePal(Command command)
     {
-        if (Player.CurrentLocation.Pals.Count > 0)
-        {
-            States.ChangeState(StateTypes.Fighting);
-            CombatCommandHandler.StartBattle(Player.CurrentLocation.Pals[0]);
-        }
-        else
-        {
-            Console.WriteLine("There is nothing to battle here.");
-        }
+        if (Player.OwnedPals == null || Player.OwnedPals.Count == 0)
+    {
+        Console.WriteLine("You cannot battle unless you have at least one pal! Catch or receive a pal first.");
+        return;
     }
+    if (Player.CurrentLocation.Pals.Count > 0)
+    {
+        States.ChangeState(StateTypes.Fighting);
+        CombatCommandHandler.StartBattle(Player.CurrentLocation.Pals[0]);
+    }
+    else
+    {
+        Console.WriteLine("There is nothing to battle here.");
+    }    }
     
     private static void ChangeToFightState(Command obj)
     {

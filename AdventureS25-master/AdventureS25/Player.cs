@@ -99,11 +99,39 @@ public static class Player
         else
         {
             Console.WriteLine("Your Pals:");
-            foreach (var pal in OwnedPals)
+            for (int i = 0; i < OwnedPals.Count; i++)
             {
-                Console.WriteLine($"- {pal.Name} (HP: {pal.CurrentHP}/{pal.MaxHP})");
+                var pal = OwnedPals[i];
+                Console.WriteLine($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
             }
         }
+    }
+
+    public static Pal PromptSelectPal(string prompt = "Select a Pal:")
+    {
+        if (OwnedPals.Count == 0)
+        {
+            Console.WriteLine("You have no pals!");
+            return null;
+        }
+        if (OwnedPals.Count == 1)
+        {
+            return OwnedPals[0];
+        }
+        Console.WriteLine(prompt);
+        for (int i = 0; i < OwnedPals.Count; i++)
+        {
+            var pal = OwnedPals[i];
+            Console.WriteLine($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
+        }
+        int choice = -1;
+        while (choice < 1 || choice > OwnedPals.Count)
+        {
+            Console.Write($"Enter number (1-{OwnedPals.Count}): ");
+            string input = Console.ReadLine();
+            int.TryParse(input, out choice);
+        }
+        return OwnedPals[choice - 1];
     }
 
 
