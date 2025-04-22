@@ -39,6 +39,8 @@ public static class ExplorationCommandValidator
                 else
                 {
                     TextPrinter.Print("I don't know how to do that.");
+                    Console.Clear();
+                    Player.Look();
                 }
             }
             else if (IsNoun(command.Noun))
@@ -49,11 +51,15 @@ public static class ExplorationCommandValidator
             else
             {
                 TextPrinter.Print("I don't know how to do that.");
+                Console.Clear();
+                Player.Look();
             }
         }
         else
         {
             TextPrinter.Print("I don't know the word " + command.Verb + ".");
+            Console.Clear();
+            Player.Look();
         }
             
         return isValid;

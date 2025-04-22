@@ -2,6 +2,7 @@ namespace AdventureS25;
 
 public static class Player
 {
+    public static string Name { get; set; } = string.Empty;
     public static Location CurrentLocation;
     public static List<Item> Inventory;
     public static List<Pal> OwnedPals;
@@ -26,6 +27,8 @@ public static class Player
         if (!Inventory.Contains(note) && !CurrentLocation.HasItem(note))
         {
             TextPrinter.Print("There is no note here to read.");
+            Console.Clear();
+            Player.Look();
             return;
         }
         // Mark the quest as complete
@@ -35,11 +38,11 @@ public static class Player
             quest.IsCompleted = true;
             Console.Clear();
             Player.Look();
-            TextPrinter.Print("You unfold the note.\n\nDear Adventurer,\n\nListen up fucker! I heard you're trying to become some kind of Pal Tamer or whatever. GOOD NEWS! I'm gonna help you not completely suck at it! I've been studying this AMAZING new Pal specimen that's perfect for beginners.\n\nGet your ass over to my Fusion Lab ASAP!!! Don't make me come find you, because I WILL, and you WON'T like it! This is important COMPUTER SCIENCE happening here!\n\nSincerely, \nProf. Jon (the smartest Computer Scientist in this dimension)");
+            TextPrinter.Print("\nYou unfold the note.\n\nDear Adventurer,\n\nListen up fucker! I heard you're trying to become some kind of Pal Tamer or whatever. GOOD NEWS! I'm gonna help you not completely suck at it! I've been studying this AMAZING new Pal specimen that's perfect for beginners.\n\nGet your ass over to my Fusion Lab ASAP!!! Don't make me come find you, because I WILL, and you WON'T like it! This is important COMPUTER SCIENCE happening here!\n\nSincerely, \nProf. Jon (the smartest Computer Scientist in this dimension)");
             // Add next quest
             Console.Clear();
             Player.Look();
-            TextPrinter.Print("Quest completed!");
+            TextPrinter.Print("\nQuest completed!");
             Quest meetJon = new Quest("Meet Professor Jon", "Visit Professor Jon at his lab. He wants to meet you about a special research project.");
             AddQuest(meetJon);
         }
@@ -68,6 +71,8 @@ public static class Player
         else
         {
             TextPrinter.Print("You can't move " + command.Noun + ".");
+            Console.Clear();
+            Player.Look();
         }
     }
 
@@ -84,14 +89,20 @@ public static class Player
         if (item == null)
         {
             TextPrinter.Print("I don't know what " + command.Noun + " is.");
+            Console.Clear();
+            Look();
         }
         else if (!CurrentLocation.HasItem(item))
         {
             TextPrinter.Print("There is no " + command.Noun + " here.");
+            Console.Clear();
+            Look();
         }
         else if (!item.IsTakeable)
         {
-            TextPrinter.Print("The " + command.Noun + " can't be taked.");
+            TextPrinter.Print("The " + command.Noun + " can't be taken.");
+            Console.Clear();
+            Look();
         }
         else
         {
@@ -99,6 +110,8 @@ public static class Player
             CurrentLocation.RemoveItem(item);
             item.Pickup();
             TextPrinter.Print("You take the " + command.Noun + ".");
+            Console.Clear();
+            Look();
         }
     }
 
@@ -107,6 +120,8 @@ public static class Player
         if (Inventory.Count == 0)
         {
             TextPrinter.Print("You are empty-handed.");
+            Console.Clear();
+            Look();
         }
         else
         {
@@ -114,9 +129,11 @@ public static class Player
             foreach (Item item in Inventory)
             {
                 string article = SemanticTools.CreateArticle(item.Name);
-                TextPrinter.Print(" " + article + " " + item.Name);
+                TextPrinter.Print(article + " " + item.Name);
             }
         }
+        Console.Clear();
+        Player.Look();
     }
 
     public static void AddPalToCollection(Pal pal)
@@ -298,6 +315,8 @@ public static class Player
             {
                 TextPrinter.Print(quest.ToString());
             }
+            Console.Clear();
+            Player.Look();
         }
     }
 

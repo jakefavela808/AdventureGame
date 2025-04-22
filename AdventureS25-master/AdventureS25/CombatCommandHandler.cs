@@ -41,6 +41,7 @@ public static class CombatCommandHandler
         Console.Clear();
         Console.WriteLine(CommandList.combatCommands + "\n");
         PrintBattleIntro();
+        Console.WriteLine("");
         PrintBattleStatus();
         TextPrinter.Print($"What shall {playerPal.Name} do?");
         string input = string.Empty;
@@ -99,12 +100,21 @@ public static class CombatCommandHandler
 
     private static void PrintBattleIntro()
     {
+        AsciiArt.Print(AsciiArt.battleText);
         TextPrinter.Print($"A wild {wildPal.Name} appears!");
         Console.WriteLine(wildPal.AsciiArt);
+        PrintPalStats(wildPal);
         TextPrinter.Print(wildPal.Description);
-        TextPrinter.Print($"You send out {playerPal.Name}!\n");
+        TextPrinter.Print($"\nYou send out {playerPal.Name}!\n");
         Console.WriteLine(playerPal.AsciiArt);
+        PrintPalStats(playerPal);
         TextPrinter.Print(playerPal.Description);
+        AsciiArt.Print(AsciiArt.battleOverText);
+    }
+
+    private static void PrintPalStats(Pal pal)
+    {
+        TextPrinter.Print($"Level: {pal.Level} | HP: {pal.CurrentHP}/{pal.MaxHP} | Atk: {pal.Attack} | Def: {pal.Defense} | Spc: {pal.Special} | XP: {pal.XP}/{pal.XPToNextLevel}");
     }
 
     private static void PrintBattleStatus()
@@ -175,7 +185,11 @@ public static class CombatCommandHandler
         {
             TextPrinter.Print($"You tamed {wildPal.Name}! It joins your party.");
             Player.AddPalToCollection(wildPal);
-            Player.CurrentLocation.Pals.Remove(wildPal);
+            var currentLocation = Player.CurrentLocation;
+            currentLocation.Pals.Remove(wildPal);
+            // Immediately spawn a new instance of the same Pal in the same location
+            Pal newWildPal = new Pal(wildPal.Name, wildPal.AsciiArt, wildPal.Description, wildPal.MaxHP, wildPal.Attack, wildPal.Defense, wildPal.Special);
+            currentLocation.Pals.Add(newWildPal);
             // Set HasCaughtPal condition to true for quest logic
             Conditions.ChangeCondition(ConditionTypes.HasCaughtPal, true);
             EndBattle();

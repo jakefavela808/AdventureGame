@@ -15,10 +15,13 @@ public static class Game
             Console.Clear();
             TextPrinter.Print("What is your name?");
             string name = CommandProcessor.GetInput();
+            Player.Name = name;
             TextPrinter.Print($"Welcome, {name}!");
             // Prompt for difficulty
             TextPrinter.Print("\nSelect difficulty:");
-            TextPrinter.Print("1. Easy\n2. Normal\n3. Hard");
+            TextPrinter.Print("1. Easy - XP Gain +20%, Enemy Damage -20%, Tame Chance +20%.");
+            TextPrinter.Print("2. Normal - XP Gain +0%, Enemy Damage +0%, Tame Chance +0%.");
+            TextPrinter.Print("3. Hard - XP Gain -15%, Enemy Damage +25%, Tame Chance -15%.");
             string diffInput = CommandProcessor.GetInput();
             string difficulty = "Normal";
             switch (diffInput)

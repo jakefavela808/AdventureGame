@@ -94,6 +94,8 @@ public static class ExplorationCommandHandler
         if (Player.OwnedPals == null || Player.OwnedPals.Count == 0)
     {
         TextPrinter.Print("You cannot battle unless you have at least one pal! Catch or receive a pal first.");
+        Console.Clear();
+        Player.Look();
         return;
     }
     if (Player.CurrentLocation.Pals.Count > 0)
@@ -104,7 +106,10 @@ public static class ExplorationCommandHandler
     else
     {
         TextPrinter.Print("There is nothing to battle here.");
-    }    }
+        Console.Clear();
+        Player.Look();
+    }    
+    }
     
     private static void ChangeToFightState(Command obj)
     {
@@ -145,6 +150,8 @@ public static class ExplorationCommandHandler
         else
         {
             TextPrinter.Print("I don't know how to do that.");
+            Console.Clear();
+            Player.Look();
         }
     }
     

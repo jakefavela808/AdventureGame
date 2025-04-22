@@ -11,20 +11,28 @@ public static class NPCs
         NPC professorJon = new NPC(
             "Professor Jon",
             AsciiArt.jonCharacter,
-            "A quirky scientist with wild hair, always eager to talk about Pals.",
-            "Jon: Welcome to my lab! Have you ever wondered how Pals evolve?" );
+            "A local professor who studies Pals and their habitats. Seems to be perpetually on the brink of a coding breakthrough... or a mental breakdown.",
+            $"Jon: Welcome to my lab, {Player.Name}! You ever *burp* wonder how Pals evolve? Yeah, it's wild science!" );
         nameToNPC.Add("Professor Jon", professorJon);
 
         NPC nurseNoelia = new NPC(
             "Nurse Noelia",
             AsciiArt.nurseCharacter,
             "A kind nurse who takes care of injured Pals at the Pal Center.",
-            "Noelia: Please take care of your Pals, and let me know if any are hurt!" );
+            $"Noelia: Please take care of your Pals, {Player.Name}, and let me know if any are hurt!" );
         nameToNPC.Add("Nurse Noelia", nurseNoelia);
+
+        NPC matt = new NPC(
+            "Matt",
+            AsciiArt.mattCharacter,
+            "A wise man who lives by the river. He often chats with travelers.",
+            $"Matt: Thank you for visiting me, {Player.Name}." );
+        nameToNPC.Add("Matt", matt);
 
         // Place NPCs in locations
         Map.AddNPC(professorJon, "Professor Jon's Lab");
         Map.AddNPC(nurseNoelia, "Pal Center");
+        Map.AddNPC(matt , "Riverside Cabin");
     }
 
     public static void TalkToNPC(Command command)
@@ -55,12 +63,12 @@ public static class NPCs
                     {
                         battleQuest.IsCompleted = true;
                     }
-                    TextPrinter.Print("\nProfessor Jon: Impressive! You caught your first Pal! Here's a reward for your achievement.");
+                    TextPrinter.Print($"\nJon: *burp* Not bad, kid! You actually caught a Pal. Here's a reward, don't spend it all in one place, {Player.Name}!");
                     Player.GiveReward(30); // Give XP reward for catching a Pal
                     if (!Player.Quests.Any(q => q.Name == "Visit the Nurse"))
                     {
-                        Quest nurseQuest = new Quest("Visit the Nurse", "Visit Nurse Noelia at the Pal Center to heal your Pals.");
-                        TextPrinter.Print("\nProfessor Jon: Now, go visit Nurse Noelia at the Pal Center to get your Pals healed up!");
+                        Quest nurseQuest = new Quest("Visit the Nurse", $"Visit Nurse Noelia at the Pal Center to heal your Pals, {Player.Name}.");
+                        TextPrinter.Print($"\nJon: Listen, {Player.Name}, you gotta go see Nurse Noelia at the Pal Center. Get your Pals healed up, science waits for no one!");
                         Console.Clear();
                         States.ChangeState(StateTypes.Exploring);
                         Player.Look();
@@ -68,7 +76,7 @@ public static class NPCs
                     }
                     else
                     {
-                        TextPrinter.Print("\nProfessor Jon: You already have the quest to visit Nurse Noelia. Go see her if you haven't yet.");
+                        TextPrinter.Print($"\nJon: Ugh, you already got the quest, {Player.Name}! Go see Noelia, stop wasting my time!");
                     }
                     return;
                 }
@@ -82,16 +90,17 @@ public static class NPCs
                     if (Sandie == null)
                     {
                         Sandie = new Pal("Sandie", AsciiArt.sandiePal, "A cheerful grass pal.", 30, 8, 7, 12);
-                        TextPrinter.Print("\nJon: Welcome! Here, take this pal, Sandie, as your companion.\n");
+                        TextPrinter.Print($"\nJon: *burp* P-P-Perfect timing, {Player.Name}! I've been coding all night, barely slept, and I just brought Sandie to life! This Pal is, uh, one of a kind, trust me!\n");
+                        TextPrinter.Print($"Jon: Here take Sandie, {Player.Name}! I'm *burp* t-trusting you with her.\n\n");
                         Sandie.PrintDescription();
                         Player.AddPalToCollection(Sandie);
                     }
                     else
                     {
-                        TextPrinter.Print("\nJon: Welcome back! You already have your pal, Sandie.");
+                        TextPrinter.Print($"\nJon: Oh, you're back, {Player.Name}. You already got Sandie, don't get greedy!");
                     }
-                    TextPrinter.Print("\nJon: Now, test your battle skills by finding and taming a wild pal!");
-                    Quest battleQuest = new Quest("Test Your Battle Skills", "Find and tame a wild pal in the grasslands.");
+                    TextPrinter.Print($"\nJon: Alright, {Player.Name}, go test your battle skills! Find a wild Pal, tame it, and, uh, try not to die!");
+                    Quest battleQuest = new Quest("Test Your Battle Skills", $"Find and tame a wild pal in the grasslands, {Player.Name}.");
                     Console.Clear();
                     States.ChangeState(StateTypes.Exploring);
                     Player.Look();
@@ -101,7 +110,7 @@ public static class NPCs
                 // If 'Meet Professor Jon' quest is completed but player hasn't caught a Pal
                 if (meetJonQuest != null && meetJonQuest.IsCompleted && !Conditions.IsTrue(ConditionTypes.HasCaughtPal))
                 {
-                    TextPrinter.Print("Jon: Go catch a Pal and come back! Don't waste my time until you do your damn quest.");
+                    TextPrinter.Print($"Jon: *burp* Go catch a Pal and come back, {Player.Name}! Don't waste my time until you do your damn quest!");
                     Console.Clear();
                     States.ChangeState(StateTypes.Exploring);
                     Player.Look();
@@ -122,11 +131,61 @@ public static class NPCs
                         pal.CurrentHP = pal.MaxHP;
                     }
                     nurseQuest.IsCompleted = true;
-                    TextPrinter.Print("\nNurse Noelia: Your Pals are fully healed! Good luck on your adventure.");
+                    TextPrinter.Print("\nNurse Noelia: Your Pals are fully healed! Thank you for coming to see me.");
+
+                    // Trigger new quest after healing
+                    if (!Player.Quests.Any(q => q.Name == "Deliver Medicine"))
+                    {
+                        Quest deliverQuest = new Quest("Deliver Medicine", $"Deliver Nurse Noelia's medicine to Matt in the Riverside Cabin, {Player.Name}.");
+                        TextPrinter.Print($"Nurse Noelia: {Player.Name}, could you do me a favor? Please deliver this medicine to Matt in the Riverside Cabin. He's been feeling unwell lately. Here, take this bottle of medicine.");
+                        States.ChangeState(StateTypes.Exploring);
+                        Player.Look();
+                        Player.AddQuest(deliverQuest);
+                        Player.AddItemToInventory("medicine");
+                        TextPrinter.Print("You received the medicine from Nurse Noelia.");
+                    }
+                    else
+                    {
+                        TextPrinter.Print($"Nurse Noelia: {Player.Name}, don't forget to deliver the medicine to Matt in the Riverside Cabin!");
+                    }
+                }
+                else if (Player.Quests.Any(q => q.Name == "Deliver Medicine" && !q.IsCompleted))
+                {
+                    TextPrinter.Print($"Nurse Noelia: {Player.Name}, please deliver the medicine to Matt in the Riverside Cabin as soon as you can.");
                 }
                 else
                 {
-                    TextPrinter.Print("\nNurse Noelia: Please take care of your Pals, and let me know if any are hurt!");
+                    TextPrinter.Print($"\nNurse Noelia: Please take care of your Pals, {Player.Name}, and let me know if any are hurt!");
+                }
+                return;
+            }
+            else if (npc.Name == "Matt")
+            {
+                var deliverQuest = Player.Quests.FirstOrDefault(q => q.Name == "Deliver Medicine");
+                if (deliverQuest != null && !deliverQuest.IsCompleted)
+                {
+                    var medicine = Items.GetItemByName("medicine");
+                    if (Player.Inventory.Contains(medicine))
+                    {
+                        Player.RemoveItemFromInventory("medicine");
+                        deliverQuest.IsCompleted = true;
+                        TextPrinter.Print("\nMatt: Oh! Nurse Noelia sent this? Thank you so much, young one. Please tell her I am grateful! Here, take this as a token of my appreciation.");
+                        Player.GiveReward(20);
+                    }
+                    else
+                    {
+                        TextPrinter.Print("\nMatt: Do you have the medicine from Nurse Noelia? Please bring it to me if you have it.");
+                        return;
+                    }
+                }
+                else if (deliverQuest != null && deliverQuest.IsCompleted)
+                {
+                    TextPrinter.Print($"\nMatt: Thank you again for delivering the medicine, {Player.Name}. I feel much better!");
+                    Console.Clear();
+                }
+                else
+                {
+                    TextPrinter.Print(npc.Dialogue);
                 }
                 States.ChangeState(StateTypes.Exploring);
                 Player.Look();
@@ -136,6 +195,8 @@ public static class NPCs
         else if (npcs.Count == 0)
         {
             TextPrinter.Print("There is no one here to talk to.");
+            Console.Clear();
+            Player.Look();
         }
         else
         {

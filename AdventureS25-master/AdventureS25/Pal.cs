@@ -80,7 +80,7 @@ public class Pal
 
     public void PrintDescription()
     {
-        Console.WriteLine($"{AsciiArt}\n");
+        Console.WriteLine($"{AsciiArt}");
         TextPrinter.Print($"Name: {Name}");
         TextPrinter.Print($"Description: {Description}");
         TextPrinter.Print($"Level: {Level}");

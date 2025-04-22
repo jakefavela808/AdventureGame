@@ -11,6 +11,15 @@ public class Location
 {
     public LocationType Type { get; set; }
     private string name;
+    public string GetName() { return name; }
+
+    // Helper to convert location names to title case
+    private string ToTitleCase(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return input;
+        var ti = System.Globalization.CultureInfo.CurrentCulture.TextInfo;
+        return ti.ToTitleCase(input.ToLower());
+    }
     public string Description;
     public string AsciiArt;
     public string AvailableCommands;
@@ -68,6 +77,20 @@ public class Location
         foreach (Item item in Items)
         {
             fullDescription += "\n" + item.GetLocationDescription();
+        }
+
+        // List possible directions and where they lead
+        if (Connections.Count > 0)
+        {
+            // Format: North (Verdant Grasslands) East (Professor Jon's Lab)
+            List<string> dirPairs = new List<string>();
+            foreach (var kvp in Connections)
+            {
+                string dir = char.ToUpper(kvp.Key[0]) + kvp.Key.Substring(1).ToLower();
+                string locName = kvp.Value != null ? ToTitleCase(kvp.Value.GetName()) : "Unknown";
+                dirPairs.Add($"{dir} ({locName})");
+            }
+            fullDescription += "\n\nPossible directions: " + string.Join(" ", dirPairs);
         }
         
         return fullDescription;

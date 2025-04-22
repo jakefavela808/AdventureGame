@@ -24,6 +24,8 @@ public static class Parser
         else
         {
             TextPrinter.Print("I don't understand that.");
+            Console.Clear();
+            Player.Look();
         }
         
         return command;

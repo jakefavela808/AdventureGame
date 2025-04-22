@@ -42,9 +42,13 @@ public static class Items
             "some puke",
             "A disgusting pile of puke.");
         nameToItem.Add("puke", puke);
+
+        // Quest item: medicine for the Old Man quest
+        Item medicine = new Item("medicine", "A small bottle of medicine from Nurse Noelia.", "There is a small bottle of medicine here.");
+        nameToItem.Add("medicine", medicine);
         
         // Add a note item for the new quest
-        Item note = new Item("note", "mysterious note", "A folded note lies on the table. It looks important.\n");
+        Item note = new Item("note", "mysterious note", "A folded note lies on the table. It looks important.");
         nameToItem.Add("note", note);
         
         // Place the sword in Verdent Grasslands for the quest

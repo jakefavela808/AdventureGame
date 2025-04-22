@@ -22,13 +22,18 @@ public static class Map
 
         Location palCenter = new Location(CommandList.exploreCommands, "Pal Center", AsciiArt.palCenterLocation, "A modern healing facility with state-of-the-art technology for treating injured Pals. The center is staffed by friendly nurses and doctors who can restore your Pals to full health. A large red and white sign hangs above the entrance.", LocationType.Indoor);
         nameToLocation.Add("Pal Center", palCenter);
-        
+
+        Location riversideCabin = new Location(CommandList.exploreCommands, "Riverside Cabin", AsciiArt.riversideCabinLocation, "A cozy wooden cabin by the river. Matt lives here and welcomes visitors with stories and wisdom.", LocationType.Indoor);
+        nameToLocation.Add("Riverside Cabin", riversideCabin);
+
         home.AddConnection("north", verdantGrasslands);
         verdantGrasslands.AddConnection("south", home);
         verdantGrasslands.AddConnection("east", laboratory);
         verdantGrasslands.AddConnection("west", palCenter);
         palCenter.AddConnection("east", verdantGrasslands);
         laboratory.AddConnection("west", verdantGrasslands);
+        verdantGrasslands.AddConnection("north", riversideCabin);
+        riversideCabin.AddConnection("south", verdantGrasslands);
 
         StartLocation = home;
     }
