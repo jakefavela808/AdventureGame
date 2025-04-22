@@ -25,6 +25,19 @@ public static class Pals
         // Place Pals in locations
         Map.AddPal(sparky, "Verdent Grasslands");
         Map.AddPal(aqua, "Verdent Grasslands");
+
+        // Ensure only one pal per location (dynamic, no hardcoding)
+        var rand = new System.Random();
+        foreach (var location in Map.Locations)
+        {
+            if (location.Pals.Count > 1)
+            {
+                int keepIdx = rand.Next(location.Pals.Count);
+                var palToKeep = location.Pals[keepIdx];
+                location.Pals.Clear();
+                location.Pals.Add(palToKeep);
+            }
+        }
     }
 
     public static void BattlePal(Command command)

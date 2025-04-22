@@ -5,6 +5,9 @@ public static class Map
     private static Dictionary<string, Location> nameToLocation = 
         new Dictionary<string, Location>();
     public static Location StartLocation;
+
+    // Expose all locations as an enumerable property
+    public static IEnumerable<Location> Locations => nameToLocation.Values;
     
     public static void Initialize()
     {

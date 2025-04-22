@@ -38,6 +38,8 @@ public static class CombatCommandHandler
     private static void Run(Command command)
     {
         Console.WriteLine("You flee");
+        Console.Clear();
         States.ChangeState(StateTypes.Exploring);
+        Player.Look();
     }
 }
