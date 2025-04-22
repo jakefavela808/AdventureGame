@@ -38,7 +38,13 @@ public static class NPCs
             Console.WriteLine(CommandList.conversationCommands);
             Console.WriteLine(npc.AsciiArt);
             Console.WriteLine($"{npc.Description}");
-            Console.WriteLine($"{npc.Dialogue}");
+            Console.WriteLine(npc.Dialogue);
+
+            // If Jon, give a sample quest
+            if (npc.Name == "Professor Jon")
+            {
+                Player.AddQuest(new Quest("Find the Lost Sword", "Jon has asked you to find his lost sword in the forest."));
+            }
         }
         else if (npcs.Count == 0)
         {

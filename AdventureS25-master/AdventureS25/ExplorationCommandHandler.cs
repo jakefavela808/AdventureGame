@@ -19,6 +19,7 @@ public static class ExplorationCommandHandler
             {"explore", ChangeToExploreState},
             {"talk", TalkToNPC},
             {"pals", ShowPals},
+            {"quests", ShowQuests},
             {"drink", Drink},
             {"beerme", SpawnBeerInInventory},
             {"unbeerme", UnSpawnBeerInInventory},
@@ -38,6 +39,11 @@ public static class ExplorationCommandHandler
     private static void ShowHelp(Command command)
     {
         Console.WriteLine(CommandList.exploreCommands);
+    }
+
+    private static void ShowQuests(Command command)
+    {
+        Player.ShowQuests();
     }
 
     private static void Connect(Command obj)

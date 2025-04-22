@@ -5,11 +5,13 @@ public static class Player
     public static Location CurrentLocation;
     public static List<Item> Inventory;
     public static List<Pal> OwnedPals;
+    public static List<Quest> Quests = new List<Quest>();
 
     public static void Initialize()
     {
         Inventory = new List<Item>();
         OwnedPals = new List<Pal>();
+        Quests = new List<Quest>();
         CurrentLocation = Map.StartLocation;
     }
 
@@ -182,5 +184,44 @@ public static class Player
         
         // print out a description of the location
         Look();
+    }
+
+    public static void AddQuest(Quest quest)
+    {
+        if (!Quests.Any(q => q.Name == quest.Name))
+        {
+            Quests.Add(quest);
+            Console.WriteLine($"\nNew quest added: {quest.Name}!");
+        }
+        else
+        {
+            Console.WriteLine($"\nYou already have the quest: {quest.Name}.");
+        }
+    }
+
+    public static void RemoveQuest(string questName)
+    {
+        var quest = Quests.FirstOrDefault(q => q.Name == questName);
+        if (quest != null)
+        {
+            Quests.Remove(quest);
+            Console.WriteLine($"\nQuest removed: {questName}");
+        }
+    }
+
+    public static void ShowQuests()
+    {
+        if (Quests.Count == 0)
+        {
+            Console.WriteLine("\nYou have no active quests.");
+        }
+        else
+        {
+            Console.WriteLine("\n============ YOUR QUESTS ============");
+            foreach (var quest in Quests)
+            {
+                Console.WriteLine(quest);
+            }
+        }
     }
 }
