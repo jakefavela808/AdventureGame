@@ -7,7 +7,6 @@ public static class ConversationCommandHandler
         {
             {"yes", Yes},
             {"no", No},
-            {"leave", Leave},
             {"help", ShowHelp},
         };
     
@@ -27,19 +26,11 @@ public static class ConversationCommandHandler
     
     private static void No(Command command)
     {
-        Console.WriteLine("You are disagreed");
+        Console.WriteLine("You disagreed");
     }
 
     private static void ShowHelp(Command command)
     {
         Console.WriteLine(CommandList.conversationCommands);
-    }
-
-    private static void Leave(Command command)
-    {
-        Console.WriteLine("You are dead");
-        States.ChangeState(StateTypes.Exploring);
-        Console.Clear();
-        Player.Look();
     }
 }

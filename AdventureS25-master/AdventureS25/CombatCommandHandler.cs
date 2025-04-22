@@ -133,8 +133,12 @@ public static class CombatCommandHandler
 
     private static void Tame(Command command)
     {
+        int baseTame = 25 + (wildPal.MaxHP - wildPal.CurrentHP);
+        // Difficulty: Easy = +20, Normal = 0, Hard = -15 to tame threshold
+        if (Game.Difficulty == "Easy") baseTame += 20;
+        else if (Game.Difficulty == "Hard") baseTame -= 15;
         int chance = rng.Next(100);
-        if (chance < 25 + (wildPal.MaxHP - wildPal.CurrentHP))
+        if (chance < baseTame)
         {
             Console.WriteLine($"You tamed {wildPal.Name}! It joins your party.");
             Player.AddPalToCollection(wildPal);
@@ -153,15 +157,21 @@ public static class CombatCommandHandler
         if (wildPal.IsFainted()) return;
         // Simple AI: randomly choose attack or special
         int move = rng.Next(2);
+        double dmgMultiplier = 1.0;
+        // Difficulty: Easy = 0.75x, Normal = 1x, Hard = 1.3x wild pal damage
+        if (Game.Difficulty == "Easy") dmgMultiplier = 0.75;
+        else if (Game.Difficulty == "Hard") dmgMultiplier = 1.3;
         if (move == 0)
         {
-            int damage = Math.Max(1, wildPal.Attack - playerPal.Defense/2 + rng.Next(-2, 3));
+            int baseDmg = Math.Max(1, wildPal.Attack - playerPal.Defense/2 + rng.Next(-2, 3));
+            int damage = Math.Max(1, (int)Math.Round(baseDmg * dmgMultiplier));
             playerPal.TakeDamage(damage);
             Console.WriteLine($"{wildPal.Name} attacks! {playerPal.Name} takes {damage} damage.");
         }
         else
         {
-            int damage = Math.Max(2, wildPal.Special - playerPal.Defense + rng.Next(0, 4));
+            int baseDmg = Math.Max(2, wildPal.Special - playerPal.Defense + rng.Next(0, 4));
+            int damage = Math.Max(1, (int)Math.Round(baseDmg * dmgMultiplier));
             playerPal.TakeDamage(damage);
             Console.WriteLine($"{wildPal.Name} uses a special move! {playerPal.Name} takes {damage} damage.");
         }
@@ -175,6 +185,13 @@ public static class CombatCommandHandler
         if (wildPal.IsFainted())
         {
             Console.WriteLine($"{wildPal.Name} fainted! You win the battle!\n");
+            // Difficulty: Easy = 1.3x, Normal = 1x, Hard = 0.75x XP gain
+            double xpMult = 1.0;
+            if (Game.Difficulty == "Easy") xpMult = 1.3;
+            else if (Game.Difficulty == "Hard") xpMult = 0.75;
+            int baseXP = 20 + wildPal.Level * 5;
+            int xp = Math.Max(1, (int)Math.Round(baseXP * xpMult));
+            playerPal.GainXP(xp);
             EndBattle();
             States.ChangeState(StateTypes.Exploring);
             Player.Look();

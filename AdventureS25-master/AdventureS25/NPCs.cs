@@ -43,36 +43,31 @@ public static class NPCs
             // If Jon, give a sample quest
             if (npc.Name == "Professor Jon")
             {
-                var quest = Player.Quests.FirstOrDefault(q => q.Name == "Find the Lost Sword");
-                if (quest == null)
+                // Handle 'Meet Professor Jon' quest
+                var meetJonQuest = Player.Quests.FirstOrDefault(q => q.Name == "Meet Professor Jon");
+                if (meetJonQuest != null && !meetJonQuest.IsCompleted)
                 {
-                    quest = new Quest("Find the Lost Sword", "Jon has asked you to find his lost sword in the Verdent Grasslands and bring it back to him.");
-                    Player.AddQuest(quest);
-                    Console.WriteLine("\nJon: Please find my lost sword in the Verdent Grasslands and bring it to me!");
-                }
-                else if (!quest.IsCompleted)
-                {
-                    var sword = Items.GetItemByName("sword");
-                    if (Player.Inventory.Contains(sword))
+                    meetJonQuest.IsCompleted = true;
+                    // Give the player a new pal if they don't have it
+                    var sproutle = Player.OwnedPals.FirstOrDefault(p => p.Name == "Sproutle");
+                    if (sproutle == null)
                     {
-                        quest.IsCompleted = true;
-                        Player.RemoveItemFromInventory("sword");
-                        Console.WriteLine("\nJon: You found my sword! Thank you so much!");
-                        Console.WriteLine("Quest completed! You can reward one of your pals with XP.");
-                        var pal = Player.PromptSelectPal("Which pal should receive 20 XP as a quest reward?");
-                        if (pal != null)
-                        {
-                            pal.GainXP(20);
-                        }
+                        sproutle = new Pal("Sproutle", AsciiArt.sandiePal, "A cheerful grass pal.", "Let's grow together!", 30, 8, 7, 12);
+                        Player.AddPalToCollection(sproutle);
+                        Console.WriteLine("\nJon: Welcome! Here, take this pal, Sproutle, as your companion.");
                     }
                     else
                     {
-                        Console.WriteLine("\nJon: Please bring me my lost sword from the Verdent Grasslands!");
+                        Console.WriteLine("\nJon: Welcome back! You already have your pal, Sproutle.");
                     }
-                }
-                else
-                {
-                    Console.WriteLine("\nJon: Thank you again for returning my sword!");
+                    Console.WriteLine("Jon: Now, test your battle skills by finding a wild pal to battle!");
+                    // Optionally, add a new quest for battling
+                    Quest battleQuest = new Quest("Test Your Battle Skills", "Find and battle a wild pal in the grasslands.");
+                    Console.Clear();
+                    States.ChangeState(StateTypes.Exploring);
+                    Player.Look();
+                    Player.AddQuest(battleQuest);
+                    return;
                 }
             }
         }

@@ -2,6 +2,7 @@ namespace AdventureS25;
 
 public static class Game
 {
+    public static string Difficulty { get; set; } = "Normal";
     public static void PlayGame()
     {
         Console.WriteLine(AsciiArt.titleAndLogo);
@@ -14,6 +15,25 @@ public static class Game
             Console.WriteLine("What is your name?");
             string name = CommandProcessor.GetInput();
             Console.WriteLine($"Welcome, {name}!");
+            // Prompt for difficulty
+            Console.WriteLine("\nSelect difficulty:");
+            Console.WriteLine("1. Easy\n2. Normal\n3. Hard");
+            string diffInput = CommandProcessor.GetInput();
+            string difficulty = "Normal";
+            switch (diffInput)
+            {
+                case "1":
+                    difficulty = "Easy";
+                    break;
+                case "3":
+                    difficulty = "Hard";
+                    break;
+                default:
+                    difficulty = "Normal";
+                    break;
+            }
+            Game.Difficulty = difficulty;
+            Console.WriteLine($"Difficulty set to: {difficulty}");
             Console.Clear();
             Initialize();
             Console.WriteLine(Player.GetLocationDescription());

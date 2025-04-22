@@ -28,8 +28,10 @@ public static class ExplorationCommandHandler
             {"teleport", Teleport},
             {"connect", Connect},
             {"disconnect", Disconnect},
+            {"read", Read},
             {"help", ShowHelp}
         };
+
 
     private static void Disconnect(Command obj)
     {
@@ -169,6 +171,11 @@ public static class ExplorationCommandHandler
     private static void Take(Command command)
     {
         Player.Take(command);
+    }
+
+    private static void Read(Command command)
+    {
+        Player.Read(command);
     }
 
     private static void Troff(Command command)

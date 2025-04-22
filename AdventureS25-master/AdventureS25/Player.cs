@@ -13,7 +13,42 @@ public static class Player
         OwnedPals = new List<Pal>();
         Quests = new List<Quest>();
         CurrentLocation = Map.StartLocation;
+        // Give player the quest to read the note
+        Quest introQuest = new Quest("Read the Note", "Read the note in your home to begin your adventure.");
+        AddQuest(introQuest);
+        Console.WriteLine("Quest added: Read the note in your home to begin your adventure!");
     }
+
+    public static void Read(Command command)
+    {
+        if (command.Noun != "note")
+        {
+            Console.WriteLine("You can't read that.");
+            return;
+        }
+        var note = Items.GetItemByName("note");
+        if (!Inventory.Contains(note) && !CurrentLocation.HasItem(note))
+        {
+            Console.WriteLine("There is no note here to read.");
+            return;
+        }
+        // Mark the quest as complete
+        var quest = Quests.FirstOrDefault(q => q.Name == "Read the Note");
+        if (quest != null && !quest.IsCompleted)
+        {
+            quest.IsCompleted = true;
+            Console.WriteLine("You unfold the note. It reads: 'Meet Professor Jon in his lab. He has something important for you.'");
+            Console.WriteLine("Quest completed! Go visit Professor Jon in his lab to continue your adventure.");
+            // Add next quest
+            Quest meetJon = new Quest("Meet Professor Jon", "Go to Professor Jon's lab and talk to him.");
+            AddQuest(meetJon);
+        }
+        else
+        {
+            Console.WriteLine("You unfold the note. It reads: 'Meet Professor Jon in his lab. He has something important for you.'");
+        }
+    }
+
 
     public static void Move(Command command)
     {
@@ -245,7 +280,7 @@ public static class Player
         }
         else
         {
-            Console.WriteLine("\n============ YOUR QUESTS ============");
+            Console.WriteLine("\n============ YOUR QUESTS ============\n");
             foreach (var quest in Quests)
             {
                 Console.WriteLine(quest);
