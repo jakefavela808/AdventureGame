@@ -21,12 +21,12 @@ public static class ConversationCommandHandler
 
     private static void Yes(Command command)
     {
-        Console.WriteLine("You agreed");
+        TextPrinter.Print("You agreed");
     }
     
     private static void No(Command command)
     {
-        Console.WriteLine("You disagreed");
+        TextPrinter.Print("You disagreed");
     }
 
     private static void ShowHelp(Command command)

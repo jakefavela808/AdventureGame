@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class CommandProcessor
 {
@@ -25,8 +25,16 @@ public static class CommandProcessor
     
     public static string GetInput()
     {
-        Console.Write("> ");
-        string input = Console.ReadLine();
-        return input;
+        while (true)
+        {
+            int promptLeft = Console.CursorLeft;
+            int promptTop = Console.CursorTop;
+            Console.Write("> ");
+            string input = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(input))
+                return input.Trim();
+            // If input is blank/whitespace, move cursor back to prompt line
+            Console.SetCursorPosition(promptLeft, promptTop);
+        }
     }
 }

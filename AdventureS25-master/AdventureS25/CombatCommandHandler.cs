@@ -31,7 +31,7 @@ public static class CombatCommandHandler
         playerPal = Player.PromptSelectPal();
         if (playerPal == null)
         {
-            Console.WriteLine("You have no Pals to battle with!");
+            TextPrinter.Print("You have no Pals to battle with!");
             battleActive = false;
             return;
         }
@@ -42,14 +42,21 @@ public static class CombatCommandHandler
         Console.WriteLine(CommandList.combatCommands + "\n");
         PrintBattleIntro();
         PrintBattleStatus();
-        Console.WriteLine("What will you do?");
+        TextPrinter.Print($"What shall {playerPal.Name} do?");
+        string input = string.Empty;
+        while (string.IsNullOrWhiteSpace(input))
+        {
+            input = CommandProcessor.GetInput();
+        }
+        Command nextCommand = Parser.Parse(input);
+        Handle(nextCommand);
     }
 
     public static void Handle(Command command)
     {
         if (!battleActive)
         {
-            Console.WriteLine("There is no active battle.");
+            TextPrinter.Print("There is no active battle.");
             return;
         }
         if (playerTurn)
@@ -67,7 +74,7 @@ public static class CombatCommandHandler
             }
             else
             {
-                Console.WriteLine("Invalid action. Type 'attack', 'special', 'defend', 'run', or 'tame'\n");
+                TextPrinter.Print("Invalid action. Type 'attack', 'special', 'defend', 'run', or 'tame'\n");
             }
         }
         else
@@ -78,32 +85,38 @@ public static class CombatCommandHandler
         {
             playerTurn = true;
             PrintBattleStatus();
-            Console.WriteLine("What will you do?");
+            TextPrinter.Print($"What shall {playerPal.Name} do?");
+            string input = string.Empty;
+            while (string.IsNullOrWhiteSpace(input))
+            {
+                Console.Write("> ");
+                input = Console.ReadLine();
+            }
+            Command nextCommand = Parser.Parse(input);
+            Handle(nextCommand);
         }
     }
 
     private static void PrintBattleIntro()
     {
-        Console.WriteLine($"A wild {wildPal.Name} appears!");
+        TextPrinter.Print($"A wild {wildPal.Name} appears!");
         Console.WriteLine(wildPal.AsciiArt);
-        Console.WriteLine(wildPal.Description);
-        Console.WriteLine(wildPal.Dialogue + "\n");
-        Console.WriteLine($"You send out {playerPal.Name}!\n");
+        TextPrinter.Print(wildPal.Description);
+        TextPrinter.Print($"You send out {playerPal.Name}!\n");
         Console.WriteLine(playerPal.AsciiArt);
-        Console.WriteLine(playerPal.Description);
-        Console.WriteLine(playerPal.Dialogue + "\n");
+        TextPrinter.Print(playerPal.Description);
     }
 
     private static void PrintBattleStatus()
     {
-        Console.WriteLine($"-- {playerPal.Name} HP: {playerPal.CurrentHP}/{playerPal.MaxHP} | {wildPal.Name} HP: {wildPal.CurrentHP}/{wildPal.MaxHP} --\n");
+        TextPrinter.Print($"===== {playerPal.Name} HP: {playerPal.CurrentHP}/{playerPal.MaxHP} | {wildPal.Name} HP: {wildPal.CurrentHP}/{wildPal.MaxHP} =====\n");
     }
 
     private static void Fight(Command command)
     {
         int damage = Math.Max(1, playerPal.Attack - wildPal.Defense/2 + rng.Next(-2, 3));
         wildPal.TakeDamage(damage);
-        Console.WriteLine($"{playerPal.Name} attacks! {wildPal.Name} takes {damage} damage.");
+        TextPrinter.Print($"{playerPal.Name} attacks! {wildPal.Name} takes {damage} damage.");
         // If wild pal defended last turn, reset its defense
         if (wildPalDefending)
         {
@@ -117,7 +130,7 @@ public static class CombatCommandHandler
     {
         int damage = Math.Max(2, playerPal.Special - wildPal.Defense + rng.Next(0, 4));
         wildPal.TakeDamage(damage);
-        Console.WriteLine($"\n{playerPal.Name} uses a special move! {wildPal.Name} takes {damage} damage.");
+        TextPrinter.Print($"\n{playerPal.Name} uses a special move! {wildPal.Name} takes {damage} damage.");
         // If wild pal defended last turn, reset its defense
         if (wildPalDefending)
         {
@@ -129,7 +142,7 @@ public static class CombatCommandHandler
 
     private static void Defend(Command command)
     {
-        Console.WriteLine($"{playerPal.Name} braces for impact and will take less damage next turn!");
+        TextPrinter.Print($"{playerPal.Name} braces for impact and will take less damage next turn!");
         // Set a defense boost for the next wild pal attack
         playerPal.Defense += 5;
     }
@@ -139,7 +152,7 @@ public static class CombatCommandHandler
         int chance = rng.Next(100);
         if (chance < 60)
         {
-            Console.WriteLine("You successfully ran away!");
+            TextPrinter.Print("You successfully ran away!");
             EndBattle();
             Console.Clear();
             States.ChangeState(StateTypes.Exploring);
@@ -147,7 +160,7 @@ public static class CombatCommandHandler
         }
         else
         {
-            Console.WriteLine("Couldn't escape!");
+            TextPrinter.Print("Couldn't escape!");
         }
     }
 
@@ -160,7 +173,7 @@ public static class CombatCommandHandler
         int chance = rng.Next(100);
         if (chance < baseTame)
         {
-            Console.WriteLine($"You tamed {wildPal.Name}! It joins your party.");
+            TextPrinter.Print($"You tamed {wildPal.Name}! It joins your party.");
             Player.AddPalToCollection(wildPal);
             Player.CurrentLocation.Pals.Remove(wildPal);
             // Set HasCaughtPal condition to true for quest logic
@@ -172,7 +185,7 @@ public static class CombatCommandHandler
         }
         else
         {
-            Console.WriteLine($"{wildPal.Name} resisted taming!");
+            TextPrinter.Print($"{wildPal.Name} resisted taming!");
         }
     }
 
@@ -190,20 +203,20 @@ public static class CombatCommandHandler
             int baseDmg = Math.Max(1, wildPal.Attack - playerPal.Defense/2 + rng.Next(-2, 3));
             int damage = Math.Max(1, (int)Math.Round(baseDmg * dmgMultiplier));
             playerPal.TakeDamage(damage);
-            Console.WriteLine($"{wildPal.Name} attacks! {playerPal.Name} takes {damage} damage.");
+            TextPrinter.Print($"{wildPal.Name} attacks! {playerPal.Name} takes {damage} damage.");
         }
         else if (move == 1)
         {
             int baseDmg = Math.Max(2, wildPal.Special - playerPal.Defense + rng.Next(0, 4));
             int damage = Math.Max(1, (int)Math.Round(baseDmg * dmgMultiplier));
             playerPal.TakeDamage(damage);
-            Console.WriteLine($"{wildPal.Name} uses a special move! {playerPal.Name} takes {damage} damage.");
+            TextPrinter.Print($"{wildPal.Name} uses a special move! {playerPal.Name} takes {damage} damage.");
         }
         else // defend
         {
             wildPalDefending = true;
             wildPal.Defense += 5;
-            Console.WriteLine($"{wildPal.Name} braces for impact and will take less damage next turn!");
+            TextPrinter.Print($"{wildPal.Name} braces for impact and will take less damage next turn!");
         }
         // If player defended, reset defense boost
         playerPal.Defense = Math.Max(playerPal.Defense - 5, 7);
@@ -214,7 +227,7 @@ public static class CombatCommandHandler
     {
         if (wildPal.IsFainted())
         {
-            Console.WriteLine($"{wildPal.Name} fainted! You win the battle!\n");
+            TextPrinter.Print($"{wildPal.Name} fainted! You win the battle!\n");
             // Difficulty: Easy = 1.3x, Normal = 1x, Hard = 0.75x XP gain
             double xpMult = 1.0;
             if (Game.Difficulty == "Easy") xpMult = 1.3;
@@ -228,7 +241,7 @@ public static class CombatCommandHandler
         }
         else if (playerPal.IsFainted())
         {
-            Console.WriteLine($"{playerPal.Name} fainted! You lost the battle...\n");
+            TextPrinter.Print($"{playerPal.Name} fainted! You lost the battle...\n");
             EndBattle();
             States.ChangeState(StateTypes.Exploring);
             Player.Look();

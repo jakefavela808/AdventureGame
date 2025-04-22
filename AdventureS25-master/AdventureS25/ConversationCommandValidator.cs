@@ -8,7 +8,7 @@ public static class ConversationCommandValidator
         {
             return true;
         }
-        Console.WriteLine("Valid commands are: yes, no");
+        TextPrinter.Print("Valid commands are: yes, no");
         return false;
     }
 }

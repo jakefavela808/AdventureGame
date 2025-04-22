@@ -36,8 +36,8 @@ public static class NPCs
             Console.Clear();
             States.ChangeState(StateTypes.Talking);
             Console.WriteLine(CommandList.conversationCommands);
-            Console.WriteLine(npc.AsciiArt);
-            Console.WriteLine($"{npc.Description}");
+            AsciiArt.Print(npc.AsciiArt);
+            TextPrinter.Print($"{npc.Description}");
 
             // If Jon, give a sample quest
             if (npc.Name == "Professor Jon")
@@ -55,17 +55,20 @@ public static class NPCs
                     {
                         battleQuest.IsCompleted = true;
                     }
-                    Console.WriteLine("\nProfessor Jon: Impressive! You caught your first Pal! Here's a reward for your achievement.");
+                    TextPrinter.Print("\nProfessor Jon: Impressive! You caught your first Pal! Here's a reward for your achievement.");
                     Player.GiveReward(30); // Give XP reward for catching a Pal
                     if (!Player.Quests.Any(q => q.Name == "Visit the Nurse"))
                     {
                         Quest nurseQuest = new Quest("Visit the Nurse", "Visit Nurse Noelia at the Pal Center to heal your Pals.");
+                        TextPrinter.Print("\nProfessor Jon: Now, go visit Nurse Noelia at the Pal Center to get your Pals healed up!");
+                        Console.Clear();
+                        States.ChangeState(StateTypes.Exploring);
+                        Player.Look();
                         Player.AddQuest(nurseQuest);
-                        Console.WriteLine("\nProfessor Jon: Now, go visit Nurse Noelia at the Pal Center to get your Pals healed up!");
                     }
                     else
                     {
-                        Console.WriteLine("\nProfessor Jon: You already have the quest to visit Nurse Noelia. Go see her if you haven't yet.");
+                        TextPrinter.Print("\nProfessor Jon: You already have the quest to visit Nurse Noelia. Go see her if you haven't yet.");
                     }
                     return;
                 }
@@ -74,37 +77,38 @@ public static class NPCs
                 if (meetJonQuest != null && !meetJonQuest.IsCompleted)
                 {
                     meetJonQuest.IsCompleted = true;
-                    Player.GiveReward(20);
+                    Console.WriteLine("Quest completed!");
                     var Sandie = Player.OwnedPals.FirstOrDefault(p => p.Name == "Sandie");
                     if (Sandie == null)
                     {
-                        Sandie = new Pal("Sandie", AsciiArt.sandiePal, "A cheerful grass pal.", "Let's grow together!", 30, 8, 7, 12);
+                        Sandie = new Pal("Sandie", AsciiArt.sandiePal, "A cheerful grass pal.", 30, 8, 7, 12);
+                        TextPrinter.Print("\nJon: Welcome! Here, take this pal, Sandie, as your companion.\n");
+                        Sandie.PrintDescription();
                         Player.AddPalToCollection(Sandie);
-                        Console.WriteLine("\nJon: Welcome! Here, take this pal, Sandie, as your companion.");
                     }
                     else
                     {
-                        Console.WriteLine("\nJon: Welcome back! You already have your pal, Sandie.");
+                        TextPrinter.Print("\nJon: Welcome back! You already have your pal, Sandie.");
                     }
-                    Console.WriteLine("Jon: Now, test your battle skills by finding and taming a wild pal!");
+                    TextPrinter.Print("\nJon: Now, test your battle skills by finding and taming a wild pal!");
                     Quest battleQuest = new Quest("Test Your Battle Skills", "Find and tame a wild pal in the grasslands.");
-                    Player.AddQuest(battleQuest);
                     Console.Clear();
                     States.ChangeState(StateTypes.Exploring);
                     Player.Look();
+                    Player.AddQuest(battleQuest);
                     return;
                 }
                 // If 'Meet Professor Jon' quest is completed but player hasn't caught a Pal
                 if (meetJonQuest != null && meetJonQuest.IsCompleted && !Conditions.IsTrue(ConditionTypes.HasCaughtPal))
                 {
-                    Console.WriteLine("Jon: Go catch a Pal and come back! Don't waste my time until you do your damn quest.");
+                    TextPrinter.Print("Jon: Go catch a Pal and come back! Don't waste my time until you do your damn quest.");
                     Console.Clear();
                     States.ChangeState(StateTypes.Exploring);
                     Player.Look();
                     return;
                 }
                 // Otherwise, default dialogue
-                Console.WriteLine(npc.Dialogue);
+                TextPrinter.Print(npc.Dialogue);
                 return;
             }
             else if (npc.Name == "Nurse Noelia")
@@ -118,11 +122,11 @@ public static class NPCs
                         pal.CurrentHP = pal.MaxHP;
                     }
                     nurseQuest.IsCompleted = true;
-                    Console.WriteLine("\nNurse Noelia: Your Pals are fully healed! Good luck on your adventure.");
+                    TextPrinter.Print("\nNurse Noelia: Your Pals are fully healed! Good luck on your adventure.");
                 }
                 else
                 {
-                    Console.WriteLine("\nNurse Noelia: Please take care of your Pals, and let me know if any are hurt!");
+                    TextPrinter.Print("\nNurse Noelia: Please take care of your Pals, and let me know if any are hurt!");
                 }
                 States.ChangeState(StateTypes.Exploring);
                 Player.Look();
@@ -131,11 +135,11 @@ public static class NPCs
         }
         else if (npcs.Count == 0)
         {
-            Console.WriteLine("There is no one here to talk to.");
+            TextPrinter.Print("There is no one here to talk to.");
         }
         else
         {
-            Console.WriteLine("There is more than one person here. Be more specific.");
+            TextPrinter.Print("There is more than one person here. Be more specific.");
         }
     }
 

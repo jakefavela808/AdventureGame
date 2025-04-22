@@ -93,7 +93,7 @@ public static class ExplorationCommandHandler
     {
         if (Player.OwnedPals == null || Player.OwnedPals.Count == 0)
     {
-        Console.WriteLine("You cannot battle unless you have at least one pal! Catch or receive a pal first.");
+        TextPrinter.Print("You cannot battle unless you have at least one pal! Catch or receive a pal first.");
         return;
     }
     if (Player.CurrentLocation.Pals.Count > 0)
@@ -103,7 +103,7 @@ public static class ExplorationCommandHandler
     }
     else
     {
-        Console.WriteLine("There is nothing to battle here.");
+        TextPrinter.Print("There is nothing to battle here.");
     }    }
     
     private static void ChangeToFightState(Command obj)
@@ -122,7 +122,7 @@ public static class ExplorationCommandHandler
         List<string> verbs = ExplorationCommandValidator.GetVerbs();
         foreach (string verb in verbs)
         {
-            Console.WriteLine(verb);
+            TextPrinter.Print(verb);
         }
     }
 
@@ -131,7 +131,7 @@ public static class ExplorationCommandHandler
         List<string> nouns = ExplorationCommandValidator.GetNouns();
         foreach (string noun in nouns)
         {
-            Console.WriteLine(noun);
+            TextPrinter.Print(noun);
         }
     }
 
@@ -144,7 +144,7 @@ public static class ExplorationCommandHandler
         }
         else
         {
-            Console.WriteLine("I don't know how to do that.");
+            TextPrinter.Print("I don't know how to do that.");
         }
     }
     
@@ -190,7 +190,7 @@ public static class ExplorationCommandHandler
 
     public static void Eat(Command command)
     {
-        Console.WriteLine("Eating..." + command.Noun);
+        TextPrinter.Print("Eating..." + command.Noun);
     }
 
     public static void Move(Command command)

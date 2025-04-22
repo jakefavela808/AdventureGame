@@ -6,19 +6,19 @@ public static class Game
     public static void PlayGame()
     {
         Console.Clear();
-        Console.WriteLine(AsciiArt.titleAndLogo);
+        AsciiArt.Print(AsciiArt.titleAndLogo);
         Console.WriteLine("1. Start Game\n2. About Game\n3. Quit Game");
         string input = CommandProcessor.GetInput();
 
         if (input == "1")
         {
             Console.Clear();
-            Console.WriteLine("What is your name?");
+            TextPrinter.Print("What is your name?");
             string name = CommandProcessor.GetInput();
-            Console.WriteLine($"Welcome, {name}!");
+            TextPrinter.Print($"Welcome, {name}!");
             // Prompt for difficulty
-            Console.WriteLine("\nSelect difficulty:");
-            Console.WriteLine("1. Easy\n2. Normal\n3. Hard");
+            TextPrinter.Print("\nSelect difficulty:");
+            TextPrinter.Print("1. Easy\n2. Normal\n3. Hard");
             string diffInput = CommandProcessor.GetInput();
             string difficulty = "Normal";
             switch (diffInput)
@@ -34,13 +34,12 @@ public static class Game
                     break;
             }
             Game.Difficulty = difficulty;
-            Console.WriteLine($"Difficulty set to: {difficulty}");
+            TextPrinter.Print($"Difficulty set to: {difficulty}");
             Console.Clear();
             Initialize();
             Console.WriteLine(Player.GetLocationDescription());
             Quest introQuest = new Quest("Read the Note", "Read the note in your home to begin your adventure.");
             Player.AddQuest(introQuest);
-            Console.WriteLine("Quest added: Read the note in your home to begin your adventure!");
             
             bool isPlaying = true;
 
@@ -52,7 +51,7 @@ public static class Game
                 {
                     if (command.Verb == "exit")
                     {
-                        Console.WriteLine("Game Over!");
+                        TextPrinter.Print("Game Over!");
                         isPlaying = false;
                     }
                     else
@@ -65,10 +64,10 @@ public static class Game
         else if (input == "2")
         {
             Console.Clear();
-            Console.WriteLine(AsciiArt.titleAndLogo);
-            Console.WriteLine("About Game");
-            Console.WriteLine("This is an adventure game where you explore and interact with the environment.");
-            Console.WriteLine("Press any key to return to the main menu...");
+            AsciiArt.Print(AsciiArt.titleAndLogo);
+            TextPrinter.Print("About Game");
+            TextPrinter.Print("This is an adventure game where you explore and interact with the environment.");
+            TextPrinter.Print("Press any key to return to the main menu...");
             Console.Write("> ");
             Console.ReadKey();
             Console.Clear();
@@ -76,11 +75,11 @@ public static class Game
         }
         else if (input == "3")
         {
-            Console.WriteLine("Quitting Game");
+            TextPrinter.Print("Quitting Game");
         }
         else
         {
-            Console.WriteLine("Invalid input. Please try again.");
+            TextPrinter.Print("Invalid input. Please try again.");
             Console.Clear();
             PlayGame();
         }

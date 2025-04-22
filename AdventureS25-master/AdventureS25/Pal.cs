@@ -7,7 +7,6 @@ public class Pal
     public int XPToNextLevel { get; private set; }
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public string Dialogue { get; private set; }
     public string AsciiArt { get; private set; }
 
     // Battle stats
@@ -17,11 +16,10 @@ public class Pal
     public int Defense { get; set; }
     public int Special { get; private set; }
 
-    public Pal(string name, string asciiArt, string description, string dialogue, int maxHP = 30, int attack = 8, int defense = 5, int special = 12)
+    public Pal(string name, string asciiArt, string description, int maxHP = 30, int attack = 8, int defense = 5, int special = 12)
     {
         Name = name;
         Description = description;
-        Dialogue = dialogue;
         AsciiArt = asciiArt;
         MaxHP = maxHP;
         CurrentHP = maxHP;
@@ -37,7 +35,7 @@ public class Pal
     public void GainXP(int amount)
     {
         XP += amount;
-        Console.WriteLine($"{Name} gained {amount} XP!");
+        TextPrinter.Print($"\n{Name} gained {amount} XP!");
         while (XP >= XPToNextLevel)
         {
             XP -= XPToNextLevel;
@@ -54,10 +52,9 @@ public class Pal
         Defense += 2;
         Special += 2;
         CurrentHP = MaxHP;
-        Console.WriteLine($"{Name} leveled up! Now level {Level}!");
-        Console.WriteLine($"Stats increased: HP {MaxHP}, Attack {Attack}, Defense {Defense}, Special {Special}");
-        Console.WriteLine($"XP: {XP}/{XPToNextLevel}");
-        Console.Clear();
+        TextPrinter.Print($"{Name} leveled up! Now level {Level}!");
+        TextPrinter.Print($"Stats increased: HP {MaxHP}, Attack {Attack}, Defense {Defense}, Special {Special}");
+        TextPrinter.Print($"XP: {XP}/{XPToNextLevel}");
     }
 
     public void ResetHP()
@@ -79,5 +76,18 @@ public class Pal
     public string GetLocationDescription()
     {
         return $"{AsciiArt}\n{Name} - {Description}";
+    }
+
+    public void PrintDescription()
+    {
+        Console.WriteLine($"{AsciiArt}\n");
+        TextPrinter.Print($"Name: {Name}");
+        TextPrinter.Print($"Description: {Description}");
+        TextPrinter.Print($"Level: {Level}");
+        TextPrinter.Print($"HP: {CurrentHP}/{MaxHP}");
+        TextPrinter.Print($"Attack: {Attack}");
+        TextPrinter.Print($"Defense: {Defense}");
+        TextPrinter.Print($"Special: {Special}");
+        TextPrinter.Print($"XP: {XP}/{XPToNextLevel}");
     }
 }

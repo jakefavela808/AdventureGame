@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class Parser
 {
@@ -7,14 +7,9 @@ public static class Parser
         input = RemoveExtraSpaces(input);
         input = input.ToLower();
         
-        // breaK the input into individual words
+        // break the input into individual words
         List<string> words = input.Split(' ').ToList();
 
-        if (input == "")
-        {
-            words = new List<string>();
-        }
-        
         Command command = new Command();
         
         if (words.Count == 2)
@@ -28,7 +23,7 @@ public static class Parser
         }
         else
         {
-            Console.WriteLine("I don't understand that.");
+            TextPrinter.Print("I don't understand that.");
         }
         
         return command;

@@ -19,13 +19,13 @@ public static class Player
     {
         if (command.Noun != "note")
         {
-            Console.WriteLine("You can't read that.");
+            TextPrinter.Print("You can't read that.");
             return;
         }
         var note = Items.GetItemByName("note");
         if (!Inventory.Contains(note) && !CurrentLocation.HasItem(note))
         {
-            Console.WriteLine("There is no note here to read.");
+            TextPrinter.Print("There is no note here to read.");
             return;
         }
         // Mark the quest as complete
@@ -35,17 +35,17 @@ public static class Player
             quest.IsCompleted = true;
             Console.Clear();
             Player.Look();
-            Console.WriteLine("You unfold the note.\n\nDear Adventurer,\n\nListen up fucker! I heard you're trying to become some kind of Pal Tamer or whatever. GOOD NEWS! I'm gonna help you not completely suck at it! I've been studying this AMAZING new Pal specimen that's perfect for beginners.\n\nGet your ass over to my Fusion Lab ASAP!!! Don't make me come find you, because I WILL, and you WON'T like it! This is important COMPUTER SCIENCE happening here!\n\nSincerely, \nProf. Jon (the smartest Computer Scientist in this dimension)\n");
+            TextPrinter.Print("You unfold the note.\n\nDear Adventurer,\n\nListen up fucker! I heard you're trying to become some kind of Pal Tamer or whatever. GOOD NEWS! I'm gonna help you not completely suck at it! I've been studying this AMAZING new Pal specimen that's perfect for beginners.\n\nGet your ass over to my Fusion Lab ASAP!!! Don't make me come find you, because I WILL, and you WON'T like it! This is important COMPUTER SCIENCE happening here!\n\nSincerely, \nProf. Jon (the smartest Computer Scientist in this dimension)");
             // Add next quest
             Console.Clear();
             Player.Look();
-            Console.WriteLine("Quest completed! Go visit Professor Jon in his lab to continue your adventure.");
+            TextPrinter.Print("Quest completed!");
             Quest meetJon = new Quest("Meet Professor Jon", "Visit Professor Jon at his lab. He wants to meet you about a special research project.");
             AddQuest(meetJon);
         }
         else
         {
-            Console.WriteLine("You have already read the note.");
+            TextPrinter.Print("You have already read the note.");
         }
     }
 
@@ -56,7 +56,7 @@ public static class Player
         var readNoteQuest = Quests.FirstOrDefault(q => q.Name == "Read the Note");
         if (readNoteQuest != null && !readNoteQuest.IsCompleted)
         {
-            Console.WriteLine("You should read the note before leaving!");
+            TextPrinter.Print("You should read the note before leaving!");
             return;
         }
         if (CurrentLocation.CanMoveInDirection(command))
@@ -67,7 +67,7 @@ public static class Player
         }
         else
         {
-            Console.WriteLine("You can't move " + command.Noun + ".");
+            TextPrinter.Print("You can't move " + command.Noun + ".");
         }
     }
 
@@ -83,22 +83,22 @@ public static class Player
 
         if (item == null)
         {
-            Console.WriteLine("I don't know what " + command.Noun + " is.");
+            TextPrinter.Print("I don't know what " + command.Noun + " is.");
         }
         else if (!CurrentLocation.HasItem(item))
         {
-            Console.WriteLine("There is no " + command.Noun + " here.");
+            TextPrinter.Print("There is no " + command.Noun + " here.");
         }
         else if (!item.IsTakeable)
         {
-            Console.WriteLine("The " + command.Noun + " can't be taked.");
+            TextPrinter.Print("The " + command.Noun + " can't be taked.");
         }
         else
         {
             Inventory.Add(item);
             CurrentLocation.RemoveItem(item);
             item.Pickup();
-            Console.WriteLine("You take the " + command.Noun + ".");
+            TextPrinter.Print("You take the " + command.Noun + ".");
         }
     }
 
@@ -106,15 +106,15 @@ public static class Player
     {
         if (Inventory.Count == 0)
         {
-            Console.WriteLine("You are empty-handed.");
+            TextPrinter.Print("You are empty-handed.");
         }
         else
         {
-            Console.WriteLine("You are carrying:");
+            TextPrinter.Print("You are carrying:");
             foreach (Item item in Inventory)
             {
                 string article = SemanticTools.CreateArticle(item.Name);
-                Console.WriteLine(" " + article + " " + item.Name);
+                TextPrinter.Print(" " + article + " " + item.Name);
             }
         }
     }
@@ -124,11 +124,11 @@ public static class Player
         if (!OwnedPals.Contains(pal))
         {
             OwnedPals.Add(pal);
-            Console.WriteLine($"{pal.Name} has been added to your collection!");
+            TextPrinter.Print($"{pal.Name} has been added to your collection!");
         }
         else
         {
-            Console.WriteLine($"You already own {pal.Name}.");
+            TextPrinter.Print($"You already own {pal.Name}.");
         }
     }
 
@@ -136,15 +136,15 @@ public static class Player
     {
         if (OwnedPals.Count == 0)
         {
-            Console.WriteLine("You do not have any pals yet.");
+            TextPrinter.Print("You do not have any pals yet.");
         }
         else
         {
-            Console.WriteLine("Your Pals:");
+            TextPrinter.Print("Your Pals:");
             for (int i = 0; i < OwnedPals.Count; i++)
             {
                 var pal = OwnedPals[i];
-                Console.WriteLine($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
+                TextPrinter.Print($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
             }
         }
     }
@@ -153,24 +153,28 @@ public static class Player
     {
         if (OwnedPals.Count == 0)
         {
-            Console.WriteLine("You have no pals!");
+            TextPrinter.Print("You have no pals!");
             return null;
         }
         if (OwnedPals.Count == 1)
         {
             return OwnedPals[0];
         }
-        Console.WriteLine(prompt);
+        TextPrinter.Print(prompt);
         for (int i = 0; i < OwnedPals.Count; i++)
         {
             var pal = OwnedPals[i];
-            Console.WriteLine($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
+            TextPrinter.Print($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
         }
         int choice = -1;
         while (choice < 1 || choice > OwnedPals.Count)
         {
-            Console.Write($"Enter number (1-{OwnedPals.Count}): ");
-            string input = Console.ReadLine();
+            TextPrinter.Print($"Enter number (1-{OwnedPals.Count}): ");
+            string input = CommandProcessor.GetInput();
+            while (string.IsNullOrWhiteSpace(input))
+            {
+                input = CommandProcessor.GetInput();
+            }
             int.TryParse(input, out choice);
         }
         return OwnedPals[choice - 1];
@@ -189,17 +193,17 @@ public static class Player
         if (item == null)
         {
             string article = SemanticTools.CreateArticle(command.Noun);
-            Console.WriteLine("I don't know what " + article + " " + command.Noun + " is.");
+            TextPrinter.Print("I don't know what " + article + " " + command.Noun + " is.");
         }
         else if (!Inventory.Contains(item))
         {
-            Console.WriteLine("You're not carrying the " + command.Noun + ".");
+            TextPrinter.Print("You're not carrying the " + command.Noun + ".");
         }
         else
         {
             Inventory.Remove(item);
             CurrentLocation.AddItem(item);
-            Console.WriteLine("You drop the " + command.Noun + ".");
+            TextPrinter.Print("You drop the " + command.Noun + ".");
         }
 
     }
@@ -208,7 +212,7 @@ public static class Player
     {
         if (command.Noun == "beer")
         {
-            Console.WriteLine("** drinking beer");
+            TextPrinter.Print("** drinking beer");
             Conditions.ChangeCondition(ConditionTypes.IsDrunk, true);
             RemoveItemFromInventory("beer");
             AddItemToInventory("beer-bottle");
@@ -245,7 +249,7 @@ public static class Player
         // if there's no location with that name
         if (newLocation == null)
         {
-            Console.WriteLine("Trying to move to unknown location: " + locationName + ".");
+            TextPrinter.Print("Trying to move to unknown location: " + locationName + ".");
             return;
         }
             
@@ -261,11 +265,11 @@ public static class Player
         if (!Quests.Any(q => q.Name == quest.Name))
         {
             Quests.Add(quest);
-            Console.WriteLine($"New quest added: {quest.Name}!");
+            TextPrinter.Print($"\nNew quest added: {quest.Name}!");
         }
         else
         {
-            Console.WriteLine($"\nYou already have the quest: {quest.Name}.");
+            TextPrinter.Print($"\nYou already have the quest: {quest.Name}.");
         }
     }
 
@@ -275,7 +279,7 @@ public static class Player
         if (quest != null)
         {
             Quests.Remove(quest);
-            Console.WriteLine($"\nQuest removed: {questName}");
+            TextPrinter.Print($"\nQuest removed: {questName}");
         }
     }
 
@@ -283,14 +287,16 @@ public static class Player
     {
         if (Quests.Count == 0)
         {
-            Console.WriteLine("\nYou have no active quests.");
+            TextPrinter.Print("\nYou have no active quests.");
         }
         else
         {
+            Console.Clear();
+            Player.Look();
             Console.WriteLine("\n============ YOUR QUESTS ============\n");
             foreach (var quest in Quests)
             {
-                Console.WriteLine(quest);
+                TextPrinter.Print(quest.ToString());
             }
         }
     }
@@ -300,7 +306,7 @@ public static class Player
     {
         if (OwnedPals == null || OwnedPals.Count == 0)
         {
-            Console.WriteLine("You don't have a Pal to level up yet! Find or receive a Pal first.");
+            TextPrinter.Print("You don't have a Pal to level up yet! Find or receive a Pal first.");
             return;
         }
         Pal targetPal;
@@ -310,17 +316,21 @@ public static class Player
         }
         else
         {
-            Console.WriteLine($"Choose a Pal to receive {xp} XP:");
+            TextPrinter.Print($"Choose a Pal to receive {xp} XP:");
             for (int i = 0; i < OwnedPals.Count; i++)
             {
                 var pal = OwnedPals[i];
-                Console.WriteLine($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
+                TextPrinter.Print($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
             }
             int choice = -1;
             while (choice < 1 || choice > OwnedPals.Count)
             {
-                Console.Write($"Enter number (1-{OwnedPals.Count}): ");
-                string input = Console.ReadLine();
+                TextPrinter.Print($"Enter number (1-{OwnedPals.Count}): ");
+                string input = CommandProcessor.GetInput();
+                while (string.IsNullOrWhiteSpace(input))
+                {
+                    input = CommandProcessor.GetInput();
+                }
                 int.TryParse(input, out choice);
             }
             targetPal = OwnedPals[choice - 1];

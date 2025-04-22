@@ -12,7 +12,6 @@ public static class Pals
             "Gloop Glorp",
             AsciiArt.gloopGlorpPal,
             "A lively electric Pal, always ready for a battle!",
-            "Gloop Glorp: Ready to battle? Let's see what you've got!",
             32, 9, 6, 14);
         nameToPal.Add("Gloop Glorp", gloopGlorp);
 
@@ -20,7 +19,6 @@ public static class Pals
             "Clyde Capybara",
             AsciiArt.clydeCapybaraPal,
             "A calm water Pal, but fierce in battle.",
-            "Clyde Capybara: The tides will turn in my favor!",
             28, 7, 8, 15);
         nameToPal.Add("Clyde Capybara", clydeCapybara);
 
@@ -52,11 +50,11 @@ public static class Pals
         }
         else if (pals.Count == 0)
         {
-            Console.WriteLine("There is no pal here to battle.");
+            TextPrinter.Print("There is no pal here to battle.");
         }
         else
         {
-            Console.WriteLine("There is more than one pal here. Be more specific.");
+            TextPrinter.Print("There is more than one pal here. Be more specific.");
         }
     }
 

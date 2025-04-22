@@ -1,8 +1,13 @@
 namespace AdventureS25;
 
 public static class AsciiArt
-{    
-public static String titleAndLogo = @"
+{
+    public static void Print(string asciiArt)
+    {
+        Console.WriteLine(asciiArt);
+    }
+
+    public static String titleAndLogo = @"
                 ⣛⡾⣻⣿⣿⣿⣿⣷⣦⣤⣈⠙⢻⢿⣿⣿⣿⣿⣿⣿⣛⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢛⣿⣿⡿⠋⣠⣾⣿⣿
                 ⠉⡙⠙⠛⠛⠛⠛⠛⠻⠿⠿⠿⠶⣤⣌⠫⠛⢿⣿⣿⣿⠀⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠸⢿⠟⢀⣴⠿⠋⣉⣤
                 ⣟⣿⣿⣿⣿⣿⣷⣿⣿⣿⣶⣷⣶⣶⣶⡤⠄⠀⠈⠉⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡦⠀⠀⠀⢠⠤⣾⣿⣿⣿

@@ -1,4 +1,4 @@
-﻿namespace AdventureS25;
+namespace AdventureS25;
 
 public static class Debugger
 {
@@ -8,19 +8,19 @@ public static class Debugger
     {
         if (isActive)
         {
-            Console.WriteLine(message);
+            TextPrinter.Print(message);
         }
     }
 
     public static void Tron()
     {
         isActive = true;
-        Console.WriteLine("Debugging on");
+        TextPrinter.Print("Debugging on");
     }
     
     public static void Troff()
     {
         isActive = false;
-        Console.WriteLine("Debugging off");
+        TextPrinter.Print("Debugging off");
     }
 }
