@@ -90,8 +90,8 @@ public static class NPCs
                     if (Sandie == null)
                     {
                         Sandie = new Pal("Sandie", AsciiArt.sandiePal, "A cheerful grass pal.", 30, 8, 7, 12);
-                        TextPrinter.Print($"\nJon: *burp* P-P-Perfect timing, {Player.Name}! I've been coding all night, barely slept, and I just brought Sandie to life! This Pal is, uh, one of a kind, trust me!\n");
-                        TextPrinter.Print($"Jon: Here take Sandie, {Player.Name}! I'm *burp* t-trusting you with her.\n\n");
+                        TextPrinter.Print($"\nJon: *burp* P-P-Perfect timing, {Player.Name}! I've been coding all night, barely slept, and I just brought Sandie to life! This Pal is, uh, one of a kind, trust me!");
+                        TextPrinter.Print($"Jon: Here take Sandie, {Player.Name}! I'm *burp* t-trusting you with her.\n");
                         Sandie.PrintDescription();
                         Player.AddPalToCollection(Sandie);
                     }

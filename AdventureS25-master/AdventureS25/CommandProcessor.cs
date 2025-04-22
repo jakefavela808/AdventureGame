@@ -33,7 +33,9 @@ public static class CommandProcessor
             string input = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(input))
                 return input.Trim();
-            // If input is blank/whitespace, move cursor back to prompt line
+            // If input is blank/whitespace, clear the prompt line and move cursor back
+            Console.SetCursorPosition(promptLeft, promptTop);
+            Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(promptLeft, promptTop);
         }
     }

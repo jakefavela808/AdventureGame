@@ -44,11 +44,7 @@ public static class CombatCommandHandler
         Console.WriteLine("");
         PrintBattleStatus();
         TextPrinter.Print($"What shall {playerPal.Name} do?");
-        string input = string.Empty;
-        while (string.IsNullOrWhiteSpace(input))
-        {
-            input = CommandProcessor.GetInput();
-        }
+        string input = CommandProcessor.GetInput();
         Command nextCommand = Parser.Parse(input);
         Handle(nextCommand);
     }
@@ -87,12 +83,7 @@ public static class CombatCommandHandler
             playerTurn = true;
             PrintBattleStatus();
             TextPrinter.Print($"What shall {playerPal.Name} do?");
-            string input = string.Empty;
-            while (string.IsNullOrWhiteSpace(input))
-            {
-                Console.Write("> ");
-                input = Console.ReadLine();
-            }
+            string input = CommandProcessor.GetInput();
             Command nextCommand = Parser.Parse(input);
             Handle(nextCommand);
         }
@@ -100,7 +91,6 @@ public static class CombatCommandHandler
 
     private static void PrintBattleIntro()
     {
-        AsciiArt.Print(AsciiArt.battleText);
         TextPrinter.Print($"A wild {wildPal.Name} appears!");
         Console.WriteLine(wildPal.AsciiArt);
         PrintPalStats(wildPal);
@@ -109,7 +99,6 @@ public static class CombatCommandHandler
         Console.WriteLine(playerPal.AsciiArt);
         PrintPalStats(playerPal);
         TextPrinter.Print(playerPal.Description);
-        AsciiArt.Print(AsciiArt.battleOverText);
     }
 
     private static void PrintPalStats(Pal pal)
