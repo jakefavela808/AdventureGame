@@ -94,6 +94,15 @@ public static class NPCs
                     Player.Look();
                     return;
                 }
+                // If 'Meet Professor Jon' quest is completed but player hasn't caught a Pal
+                if (meetJonQuest != null && meetJonQuest.IsCompleted && !Conditions.IsTrue(ConditionTypes.HasCaughtPal))
+                {
+                    Console.WriteLine("Jon: Go catch a Pal and come back! Don't waste my time until you do your damn quest.");
+                    Console.Clear();
+                    States.ChangeState(StateTypes.Exploring);
+                    Player.Look();
+                    return;
+                }
                 // Otherwise, default dialogue
                 Console.WriteLine(npc.Dialogue);
                 return;
