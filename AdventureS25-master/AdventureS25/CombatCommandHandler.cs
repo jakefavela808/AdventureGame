@@ -2,6 +2,8 @@ namespace AdventureS25;
 
 public static class CombatCommandHandler
 {
+    // Tracks if wild pal is defending
+    private static bool wildPalDefending = false;
     private static Dictionary<string, Action<Command>> commandMap =
         new Dictionary<string, Action<Command>>()
         {
@@ -26,7 +28,13 @@ public static class CombatCommandHandler
         // For now, use the wildPal as the only participant (player does not have a team)
         wildPal = wild;
         wildPal.ResetHP();
-        playerPal = new Pal("PlayerPal", AsciiArt.sandiePal, "Your trusted pal!", "Let's win this!", 35, 10, 7, 13);
+        playerPal = Player.PromptSelectPal();
+        if (playerPal == null)
+        {
+            Console.WriteLine("You have no Pals to battle with!");
+            battleActive = false;
+            return;
+        }
         playerPal.ResetHP();
         playerTurn = true;
         battleActive = true;
@@ -96,6 +104,12 @@ public static class CombatCommandHandler
         int damage = Math.Max(1, playerPal.Attack - wildPal.Defense/2 + rng.Next(-2, 3));
         wildPal.TakeDamage(damage);
         Console.WriteLine($"{playerPal.Name} attacks! {wildPal.Name} takes {damage} damage.");
+        // If wild pal defended last turn, reset its defense
+        if (wildPalDefending)
+        {
+            wildPal.Defense = Math.Max(wildPal.Defense - 5, 7);
+            wildPalDefending = false;
+        }
         CheckBattleEnd();
     }
 
@@ -103,7 +117,13 @@ public static class CombatCommandHandler
     {
         int damage = Math.Max(2, playerPal.Special - wildPal.Defense + rng.Next(0, 4));
         wildPal.TakeDamage(damage);
-        Console.WriteLine($"{playerPal.Name} uses a special move! {wildPal.Name} takes {damage} damage.");
+        Console.WriteLine($"\n{playerPal.Name} uses a special move! {wildPal.Name} takes {damage} damage.");
+        // If wild pal defended last turn, reset its defense
+        if (wildPalDefending)
+        {
+            wildPal.Defense = Math.Max(wildPal.Defense - 5, 7);
+            wildPalDefending = false;
+        }
         CheckBattleEnd();
     }
 
@@ -143,7 +163,12 @@ public static class CombatCommandHandler
             Console.WriteLine($"You tamed {wildPal.Name}! It joins your party.");
             Player.AddPalToCollection(wildPal);
             Player.CurrentLocation.Pals.Remove(wildPal);
+            // Set HasCaughtPal condition to true for quest logic
+            Conditions.ChangeCondition(ConditionTypes.HasCaughtPal, true);
             EndBattle();
+            Console.Clear();
+            States.ChangeState(StateTypes.Exploring);
+            Player.Look();
         }
         else
         {
@@ -155,10 +180,9 @@ public static class CombatCommandHandler
     {
         if (!battleActive) return;
         if (wildPal.IsFainted()) return;
-        // Simple AI: randomly choose attack or special
-        int move = rng.Next(2);
+        // AI: randomly choose attack, special, or defend
+        int move = rng.Next(3); // 0=attack, 1=special, 2=defend
         double dmgMultiplier = 1.0;
-        // Difficulty: Easy = 0.75x, Normal = 1x, Hard = 1.3x wild pal damage
         if (Game.Difficulty == "Easy") dmgMultiplier = 0.75;
         else if (Game.Difficulty == "Hard") dmgMultiplier = 1.3;
         if (move == 0)
@@ -168,12 +192,18 @@ public static class CombatCommandHandler
             playerPal.TakeDamage(damage);
             Console.WriteLine($"{wildPal.Name} attacks! {playerPal.Name} takes {damage} damage.");
         }
-        else
+        else if (move == 1)
         {
             int baseDmg = Math.Max(2, wildPal.Special - playerPal.Defense + rng.Next(0, 4));
             int damage = Math.Max(1, (int)Math.Round(baseDmg * dmgMultiplier));
             playerPal.TakeDamage(damage);
             Console.WriteLine($"{wildPal.Name} uses a special move! {playerPal.Name} takes {damage} damage.");
+        }
+        else // defend
+        {
+            wildPalDefending = true;
+            wildPal.Defense += 5;
+            Console.WriteLine($"{wildPal.Name} braces for impact and will take less damage next turn!");
         }
         // If player defended, reset defense boost
         playerPal.Defense = Math.Max(playerPal.Defense - 5, 7);

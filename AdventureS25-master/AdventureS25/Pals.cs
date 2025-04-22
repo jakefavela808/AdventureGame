@@ -8,25 +8,25 @@ public static class Pals
 
     public static void Initialize()
     {
-        Pal sparky = new Pal(
-            "Sparky",
-            AsciiArt.sandiePal,
-            "A lively electric Pal, always ready for a battle!",
-            "Sparky: Ready to battle? Let's see what you've got!",
-            32, 9, 6, 14);
-        nameToPal.Add("Sparky", sparky);
-
-        Pal aqua = new Pal(
-            "Aqua",
+        Pal gloopGlorp = new Pal(
+            "Gloop Glorp",
             AsciiArt.gloopGlorpPal,
+            "A lively electric Pal, always ready for a battle!",
+            "Gloop Glorp: Ready to battle? Let's see what you've got!",
+            32, 9, 6, 14);
+        nameToPal.Add("Gloop Glorp", gloopGlorp);
+
+        Pal clydeCapybara = new Pal(
+            "Clyde Capybara",
+            AsciiArt.clydeCapybaraPal,
             "A calm water Pal, but fierce in battle.",
-            "Aqua: The tides will turn in my favor!",
+            "Clyde Capybara: The tides will turn in my favor!",
             28, 7, 8, 15);
-        nameToPal.Add("Aqua", aqua);
+        nameToPal.Add("Clyde Capybara", clydeCapybara);
 
         // Place Pals in locations
-        Map.AddPal(sparky, "Verdent Grasslands");
-        Map.AddPal(aqua, "Verdent Grasslands");
+        Map.AddPal(gloopGlorp, "Verdent Grasslands");
+        Map.AddPal(clydeCapybara, "Verdent Grasslands");
 
         // Ensure only one pal per location (dynamic, no hardcoding)
         var rand = new System.Random();

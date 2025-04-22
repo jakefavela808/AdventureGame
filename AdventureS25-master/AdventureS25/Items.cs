@@ -44,16 +44,11 @@ public static class Items
         nameToItem.Add("puke", puke);
         
         // Add a note item for the new quest
-        Item note = new Item("note", "mysterious note", "A folded note lies on the table. It looks important.");
+        Item note = new Item("note", "mysterious note", "A folded note lies on the table. It looks important.\n");
         nameToItem.Add("note", note);
         
         // Place the sword in Verdent Grasslands for the quest
-        Map.AddItem(sword.Name, "Verdent Grasslands");
         Map.AddItem(note.Name, "Home");
-        Map.AddItem(apple.Name, "Entrance");
-        Map.AddItem(spear.Name, "Entrance");
-        Map.AddItem(donut.Name, "Storage");
-        Map.AddItem(beer.Name, "Throne Room");
     }
 
     public static Item GetItemByName(string itemName)

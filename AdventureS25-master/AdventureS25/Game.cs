@@ -5,6 +5,7 @@ public static class Game
     public static string Difficulty { get; set; } = "Normal";
     public static void PlayGame()
     {
+        Console.Clear();
         Console.WriteLine(AsciiArt.titleAndLogo);
         Console.WriteLine("1. Start Game\n2. About Game\n3. Quit Game");
         string input = CommandProcessor.GetInput();
@@ -37,6 +38,9 @@ public static class Game
             Console.Clear();
             Initialize();
             Console.WriteLine(Player.GetLocationDescription());
+            Quest introQuest = new Quest("Read the Note", "Read the note in your home to begin your adventure.");
+            Player.AddQuest(introQuest);
+            Console.WriteLine("Quest added: Read the note in your home to begin your adventure!");
             
             bool isPlaying = true;
 
@@ -77,6 +81,7 @@ public static class Game
         else
         {
             Console.WriteLine("Invalid input. Please try again.");
+            Console.Clear();
             PlayGame();
         }
     }

@@ -38,37 +38,86 @@ public static class NPCs
             Console.WriteLine(CommandList.conversationCommands);
             Console.WriteLine(npc.AsciiArt);
             Console.WriteLine($"{npc.Description}");
-            Console.WriteLine(npc.Dialogue);
 
             // If Jon, give a sample quest
             if (npc.Name == "Professor Jon")
             {
-                // Handle 'Meet Professor Jon' quest
+                // If the player has caught a Pal, always advance the questline
+                if (Conditions.IsTrue(ConditionTypes.HasCaughtPal))
+                {
+                    // Ensure 'Test Your Battle Skills' quest exists and is completed
+                    var battleQuest = Player.Quests.FirstOrDefault(q => q.Name == "Test Your Battle Skills");
+                    if (battleQuest == null) {
+                        battleQuest = new Quest("Test Your Battle Skills", "Find and tame a wild pal in the grasslands.");
+                        Player.AddQuest(battleQuest);
+                    }
+                    if (!battleQuest.IsCompleted)
+                    {
+                        battleQuest.IsCompleted = true;
+                    }
+                    Console.WriteLine("\nProfessor Jon: Impressive! You caught your first Pal! Here's a reward for your achievement.");
+                    Player.GiveReward(30); // Give XP reward for catching a Pal
+                    if (!Player.Quests.Any(q => q.Name == "Visit the Nurse"))
+                    {
+                        Quest nurseQuest = new Quest("Visit the Nurse", "Visit Nurse Noelia at the Pal Center to heal your Pals.");
+                        Player.AddQuest(nurseQuest);
+                        Console.WriteLine("\nProfessor Jon: Now, go visit Nurse Noelia at the Pal Center to get your Pals healed up!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nProfessor Jon: You already have the quest to visit Nurse Noelia. Go see her if you haven't yet.");
+                    }
+                    return;
+                }
+                // If the player hasn't met Jon, complete that quest, give Sandie, and add the battle quest
                 var meetJonQuest = Player.Quests.FirstOrDefault(q => q.Name == "Meet Professor Jon");
                 if (meetJonQuest != null && !meetJonQuest.IsCompleted)
                 {
                     meetJonQuest.IsCompleted = true;
-                    // Give the player a new pal if they don't have it
-                    var sproutle = Player.OwnedPals.FirstOrDefault(p => p.Name == "Sproutle");
-                    if (sproutle == null)
+                    Player.GiveReward(20);
+                    var Sandie = Player.OwnedPals.FirstOrDefault(p => p.Name == "Sandie");
+                    if (Sandie == null)
                     {
-                        sproutle = new Pal("Sproutle", AsciiArt.sandiePal, "A cheerful grass pal.", "Let's grow together!", 30, 8, 7, 12);
-                        Player.AddPalToCollection(sproutle);
-                        Console.WriteLine("\nJon: Welcome! Here, take this pal, Sproutle, as your companion.");
+                        Sandie = new Pal("Sandie", AsciiArt.sandiePal, "A cheerful grass pal.", "Let's grow together!", 30, 8, 7, 12);
+                        Player.AddPalToCollection(Sandie);
+                        Console.WriteLine("\nJon: Welcome! Here, take this pal, Sandie, as your companion.");
                     }
                     else
                     {
-                        Console.WriteLine("\nJon: Welcome back! You already have your pal, Sproutle.");
+                        Console.WriteLine("\nJon: Welcome back! You already have your pal, Sandie.");
                     }
-                    Console.WriteLine("Jon: Now, test your battle skills by finding a wild pal to battle!");
-                    // Optionally, add a new quest for battling
-                    Quest battleQuest = new Quest("Test Your Battle Skills", "Find and battle a wild pal in the grasslands.");
+                    Console.WriteLine("Jon: Now, test your battle skills by finding and taming a wild pal!");
+                    Quest battleQuest = new Quest("Test Your Battle Skills", "Find and tame a wild pal in the grasslands.");
+                    Player.AddQuest(battleQuest);
                     Console.Clear();
                     States.ChangeState(StateTypes.Exploring);
                     Player.Look();
-                    Player.AddQuest(battleQuest);
                     return;
                 }
+                // Otherwise, default dialogue
+                Console.WriteLine(npc.Dialogue);
+                return;
+            }
+            else if (npc.Name == "Nurse Noelia")
+            {
+                var nurseQuest = Player.Quests.FirstOrDefault(q => q.Name == "Visit the Nurse");
+                if (nurseQuest != null && !nurseQuest.IsCompleted)
+                {
+                    // Heal all player's pals
+                    foreach (var pal in Player.OwnedPals)
+                    {
+                        pal.CurrentHP = pal.MaxHP;
+                    }
+                    nurseQuest.IsCompleted = true;
+                    Console.WriteLine("\nNurse Noelia: Your Pals are fully healed! Good luck on your adventure.");
+                }
+                else
+                {
+                    Console.WriteLine("\nNurse Noelia: Please take care of your Pals, and let me know if any are hurt!");
+                }
+                States.ChangeState(StateTypes.Exploring);
+                Player.Look();
+                return;
             }
         }
         else if (npcs.Count == 0)

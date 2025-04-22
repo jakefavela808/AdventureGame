@@ -56,6 +56,8 @@ public class Pal
         CurrentHP = MaxHP;
         Console.WriteLine($"{Name} leveled up! Now level {Level}!");
         Console.WriteLine($"Stats increased: HP {MaxHP}, Attack {Attack}, Defense {Defense}, Special {Special}");
+        Console.WriteLine($"XP: {XP}/{XPToNextLevel}");
+        Console.Clear();
     }
 
     public void ResetHP()

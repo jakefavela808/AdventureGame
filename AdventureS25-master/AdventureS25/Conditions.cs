@@ -1,4 +1,4 @@
-﻿using System.Net.Sockets;
+using System.Net.Sockets;
 
 namespace AdventureS25;
 
@@ -45,6 +45,10 @@ public static class Conditions
         isDisconnectedRooms.AddToActivateList(ConditionActions.RemoveMapConnection("Entrance", "north"));
         isDisconnectedRooms.AddToActivateList(ConditionActions.RemoveMapConnection("Throne Room", "south"));
         Add(isDisconnectedRooms);
+
+        // Add HasCaughtPal condition for quest logic
+        Condition hasCaughtPal = new Condition(ConditionTypes.HasCaughtPal);
+        Add(hasCaughtPal);
     }   
     
     public static void ChangeCondition(ConditionTypes conditionType,

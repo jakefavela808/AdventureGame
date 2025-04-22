@@ -13,10 +13,6 @@ public static class Player
         OwnedPals = new List<Pal>();
         Quests = new List<Quest>();
         CurrentLocation = Map.StartLocation;
-        // Give player the quest to read the note
-        Quest introQuest = new Quest("Read the Note", "Read the note in your home to begin your adventure.");
-        AddQuest(introQuest);
-        Console.WriteLine("Quest added: Read the note in your home to begin your adventure!");
     }
 
     public static void Read(Command command)
@@ -37,21 +33,32 @@ public static class Player
         if (quest != null && !quest.IsCompleted)
         {
             quest.IsCompleted = true;
-            Console.WriteLine("You unfold the note. It reads: 'Meet Professor Jon in his lab. He has something important for you.'");
-            Console.WriteLine("Quest completed! Go visit Professor Jon in his lab to continue your adventure.");
+            Console.Clear();
+            Player.Look();
+            Console.WriteLine("You unfold the note.\n\nDear Adventurer,\n\nListen up fucker! I heard you're trying to become some kind of Pal Tamer or whatever. GOOD NEWS! I'm gonna help you not completely suck at it! I've been studying this AMAZING new Pal specimen that's perfect for beginners.\n\nGet your ass over to my Fusion Lab ASAP!!! Don't make me come find you, because I WILL, and you WON'T like it! This is important COMPUTER SCIENCE happening here!\n\nSincerely, \nProf. Jon (the smartest Computer Scientist in this dimension)\n");
             // Add next quest
-            Quest meetJon = new Quest("Meet Professor Jon", "Go to Professor Jon's lab and talk to him.");
+            Console.Clear();
+            Player.Look();
+            Console.WriteLine("Quest completed! Go visit Professor Jon in his lab to continue your adventure.");
+            Quest meetJon = new Quest("Meet Professor Jon", "Visit Professor Jon at his lab. He wants to meet you about a special research project.");
             AddQuest(meetJon);
         }
         else
         {
-            Console.WriteLine("You unfold the note. It reads: 'Meet Professor Jon in his lab. He has something important for you.'");
+            Console.WriteLine("You have already read the note.");
         }
     }
 
 
     public static void Move(Command command)
     {
+        // Prevent leaving the room until 'Read the Note' quest is completed
+        var readNoteQuest = Quests.FirstOrDefault(q => q.Name == "Read the Note");
+        if (readNoteQuest != null && !readNoteQuest.IsCompleted)
+        {
+            Console.WriteLine("You should read the note before leaving!");
+            return;
+        }
         if (CurrentLocation.CanMoveInDirection(command))
         {
             Console.Clear();
@@ -254,7 +261,7 @@ public static class Player
         if (!Quests.Any(q => q.Name == quest.Name))
         {
             Quests.Add(quest);
-            Console.WriteLine($"\nNew quest added: {quest.Name}!");
+            Console.WriteLine($"New quest added: {quest.Name}!");
         }
         else
         {
@@ -286,5 +293,38 @@ public static class Player
                 Console.WriteLine(quest);
             }
         }
+    }
+
+    // Handles giving XP rewards for quests
+    public static void GiveReward(int xp)
+    {
+        if (OwnedPals == null || OwnedPals.Count == 0)
+        {
+            Console.WriteLine("You don't have a Pal to level up yet! Find or receive a Pal first.");
+            return;
+        }
+        Pal targetPal;
+        if (OwnedPals.Count == 1)
+        {
+            targetPal = OwnedPals[0];
+        }
+        else
+        {
+            Console.WriteLine($"Choose a Pal to receive {xp} XP:");
+            for (int i = 0; i < OwnedPals.Count; i++)
+            {
+                var pal = OwnedPals[i];
+                Console.WriteLine($"[{i + 1}] {pal.Name} (Level {pal.Level}, XP: {pal.XP}/{pal.XPToNextLevel}, HP: {pal.CurrentHP}/{pal.MaxHP})");
+            }
+            int choice = -1;
+            while (choice < 1 || choice > OwnedPals.Count)
+            {
+                Console.Write($"Enter number (1-{OwnedPals.Count}): ");
+                string input = Console.ReadLine();
+                int.TryParse(input, out choice);
+            }
+            targetPal = OwnedPals[choice - 1];
+        }
+        targetPal.GainXP(xp);
     }
 }
