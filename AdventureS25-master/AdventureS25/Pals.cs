@@ -24,24 +24,18 @@ public static class Pals
 
         Pal pibble = new Pal(
             "Pibble",
-            AsciiArt.pibblePal,
+            AsciiArt.Pibble,
             "A calm water Pal, but fierce in battle.",
             28, 7, 8, 15);
         nameToPal.Add("Pibble", pibble);
 
-        Pal clydeCapybara = new Pal(
-            "Clyde Capybara",
-            AsciiArt.clydeCapybaraPal,
+        Pal morty = new Pal(
+            "Morty",
+            AsciiArt.mortyPal,
             "A calm water Pal, but fierce in battle.",
             28, 7, 8, 15);
-        nameToPal.Add("Clyde Capybara", clydeCapybara);
+        nameToPal.Add("Morty", morty);
 
-        Pal clydeCapybara = new Pal(
-            "Clyde Capybara",
-            AsciiArt.clydeCapybaraPal,
-            "A calm water Pal, but fierce in battle.",
-            28, 7, 8, 15);
-        nameToPal.Add("Clyde Capybara", clydeCapybara);
 
         // Place Pals in locations
         Map.AddPal(gloopGlorp, "Verdent Grasslands");

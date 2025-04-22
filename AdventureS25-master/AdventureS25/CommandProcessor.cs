@@ -25,18 +25,43 @@ public static class CommandProcessor
     
     public static string GetInput()
     {
+        string input = "";
+        int promptLeft = Console.CursorLeft;
+        int promptTop = Console.CursorTop;
+        Console.Write("> ");
         while (true)
         {
-            int promptLeft = Console.CursorLeft;
-            int promptTop = Console.CursorTop;
-            Console.Write("> ");
-            string input = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(input))
-                return input.Trim();
-            // If input is blank/whitespace, clear the prompt line and move cursor back
-            Console.SetCursorPosition(promptLeft, promptTop);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(promptLeft, promptTop);
+            var key = Console.ReadKey(intercept: true);
+            if (key.Key == ConsoleKey.Enter)
+            {
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine();
+                    return input.Trim();
+                }
+                else
+                {
+                    // Clear the current prompt line and reset cursor
+                    Console.SetCursorPosition(promptLeft, promptTop);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(promptLeft, promptTop);
+                    Console.Write("> ");
+                    input = "";
+                }
+            }
+            else if (key.Key == ConsoleKey.Backspace)
+            {
+                if (input.Length > 0)
+                {
+                    input = input.Substring(0, input.Length - 1);
+                    Console.Write("\b \b");
+                }
+            }
+            else if (!char.IsControl(key.KeyChar))
+            {
+                input += key.KeyChar;
+                Console.Write(key.KeyChar);
+            }
         }
     }
 }

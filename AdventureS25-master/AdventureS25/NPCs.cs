@@ -123,24 +123,30 @@ public static class NPCs
             else if (npc.Name == "Nurse Noelia")
             {
                 var nurseQuest = Player.Quests.FirstOrDefault(q => q.Name == "Visit the Nurse");
+                var deliverQuest = Player.Quests.FirstOrDefault(q => q.Name == "Deliver Medicine");
+
+                // If nurse quest is active and not completed
                 if (nurseQuest != null && !nurseQuest.IsCompleted)
                 {
-                    // Heal all player's pals
-                    foreach (var pal in Player.OwnedPals)
+                    bool anyHurt = Player.OwnedPals.Any(pal => pal.CurrentHP < pal.MaxHP);
+                    if (anyHurt)
                     {
-                        pal.CurrentHP = pal.MaxHP;
+                        foreach (var pal in Player.OwnedPals)
+                            pal.CurrentHP = pal.MaxHP;
+                        nurseQuest.IsCompleted = true;
+                        TextPrinter.Print("\nNurse Noelia: Your Pals are fully healed! Thank you for coming to see me.");
                     }
-                    nurseQuest.IsCompleted = true;
-                    TextPrinter.Print("\nNurse Noelia: Your Pals are fully healed! Thank you for coming to see me.");
-
+                    else
+                    {
+                        nurseQuest.IsCompleted = true;
+                        TextPrinter.Print("\nNurse Noelia: All your Pals are already fully healed! But I'm glad you stopped by.");
+                    }
                     // Trigger new quest after healing
                     if (!Player.Quests.Any(q => q.Name == "Deliver Medicine"))
                     {
-                        Quest deliverQuest = new Quest("Deliver Medicine", $"Deliver Nurse Noelia's medicine to Matt in the Riverside Cabin, {Player.Name}.");
+                        Quest newDeliver = new Quest("Deliver Medicine", $"Deliver Nurse Noelia's medicine to Matt in the Riverside Cabin, {Player.Name}.");
                         TextPrinter.Print($"Nurse Noelia: {Player.Name}, could you do me a favor? Please deliver this medicine to Matt in the Riverside Cabin. He's been feeling unwell lately. Here, take this bottle of medicine.");
-                        States.ChangeState(StateTypes.Exploring);
-                        Player.Look();
-                        Player.AddQuest(deliverQuest);
+                        Player.AddQuest(newDeliver);
                         Player.AddItemToInventory("medicine");
                         TextPrinter.Print("You received the medicine from Nurse Noelia.");
                     }
@@ -148,16 +154,35 @@ public static class NPCs
                     {
                         TextPrinter.Print($"Nurse Noelia: {Player.Name}, don't forget to deliver the medicine to Matt in the Riverside Cabin!");
                     }
+                    States.ChangeState(StateTypes.Exploring);
+                    Player.Look();
+                    return;
                 }
-                else if (Player.Quests.Any(q => q.Name == "Deliver Medicine" && !q.IsCompleted))
+                // If deliver quest is active and not completed, keep existing logic
+                else if (deliverQuest != null && !deliverQuest.IsCompleted)
                 {
                     TextPrinter.Print($"Nurse Noelia: {Player.Name}, please deliver the medicine to Matt in the Riverside Cabin as soon as you can.");
+                    return;
                 }
+                // If nurse quest not active, just heal/check pals, do not affect quest logic
                 else
                 {
-                    TextPrinter.Print($"\nNurse Noelia: Please take care of your Pals, {Player.Name}, and let me know if any are hurt!");
+                    bool anyHurt = Player.OwnedPals.Any(pal => pal.CurrentHP < pal.MaxHP);
+                    if (anyHurt)
+                    {
+                        foreach (var pal in Player.OwnedPals)
+                            pal.CurrentHP = pal.MaxHP;
+                        TextPrinter.Print("\nNurse Noelia: Your Pals are fully healed! Come see me anytime they're hurt.");
+                    }
+                    else
+                    {
+                        TextPrinter.Print("\nNurse Noelia: All your Pals are already fully healed!");
+                    }
+                    Console.Clear();
+                    States.ChangeState(StateTypes.Exploring);
+                    Player.Look();
+                    return;
                 }
-                return;
             }
             else if (npc.Name == "Matt")
             {
@@ -187,6 +212,7 @@ public static class NPCs
                 {
                     TextPrinter.Print(npc.Dialogue);
                 }
+                Console.Clear();
                 States.ChangeState(StateTypes.Exploring);
                 Player.Look();
                 return;
